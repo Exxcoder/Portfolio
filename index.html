@@ -1,0 +1,4101 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Владлен — Портфолио и резюме | DevOps, инфраструктура и системное администрирование</title>
+  <meta name="description" content="Интерактивное портфолио Владлена: начинающий DevOps-инженер, специалист по системному администрированию, инфраструктуре ЦОД, сетям и информационной безопасности.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Глубокая космическая палитра */
+      --bg-void: #030406;
+      --bg-base: #06070a;
+      --bg-surface: #0b0d13;
+      --bg-card: rgba(14, 17, 24, 0.65);
+      --bg-card-hover: rgba(22, 27, 38, 0.85);
+      --bg-glass: rgba(11, 13, 19, 0.75);
+      
+      /* Космические акценты и градиенты */
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-focus: rgba(255, 255, 255, 0.4);
+      --star-glow: rgba(255, 255, 255, 0.9);
+      --nebula-purple: rgba(138, 92, 246, 0.15);
+      --nebula-blue: rgba(56, 189, 248, 0.12);
+      --gradient-cosmic: linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%);
+      
+      /* Типографика */
+      --text-primary: #ffffff;
+      --text-secondary: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --status-green: #22c55e;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-snappy: all 0.18s ease-out;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    ::selection {
+      background: rgba(167, 139, 250, 0.3);
+      color: #ffffff;
+    }
+
+    /* Верхняя полоса прогресса прокрутки */
+    .scroll-progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      z-index: 200;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--gradient-cosmic);
+      box-shadow: 0 0 12px rgba(167, 139, 250, 0.8);
+      transition: width 0.1s ease-out;
+    }
+
+    /* Космический 3D-фон */
+    #cosmosCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      display: block;
+    }
+
+    /* Центральное свечение туманности */
+    .ambient-nebula {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.08) 0%, rgba(56, 189, 248, 0.05) 45%, transparent 75%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 1;
+      animation: nebulaPulse 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebulaPulse {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+      50% { transform: translate(-48%, -47%) scale(1.15); opacity: 1; }
+      100% { transform: translate(-52%, -53%) scale(0.95); opacity: 0.8; }
+    }
+
+    /* Контейнеры макета */
+    .app-container {
+      position: relative;
+      z-index: 3;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* Шапка и навигация */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(3, 4, 6, 0.75);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-mark {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-star {
+      color: #a78bfa;
+      font-size: 0.95rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-link {
+      white-space: nowrap;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: var(--transition-snappy);
+      padding: 6px 4px;
+      position: relative;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-cosmic);
+      border-radius: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .audio-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-snappy);
+    }
+
+    .audio-btn:hover, .audio-btn.active {
+      color: #ffffff;
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-cosmic {
+      background: linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%);
+      color: #030406;
+      box-shadow: 0 0 24px rgba(167, 139, 250, 0.35);
+    }
+
+    .btn-cosmic:hover {
+      box-shadow: 0 0 32px rgba(167, 139, 250, 0.55);
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      padding: 9px 18px;
+      font-size: 0.8125rem;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+      transform: translateY(-1px);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* Главная секция */
+    .hero-section {
+      padding: 100px 0 70px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Плавающее окно с кодом на фоне */
+    .hero-floating-code {
+      position: absolute;
+      top: 15%;
+      right: 12%;
+      width: 320px;
+      background: rgba(13, 16, 23, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #a78bfa;
+      text-align: left;
+      line-height: 1.5;
+      pointer-events: none;
+      transform: perspective(1000px) rotateX(10deg) rotateY(-18deg) rotateZ(3deg);
+      opacity: 0.35;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .hero-floating-code { display: none; }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 18px;
+      background: rgba(138, 92, 246, 0.08);
+      border: 1px solid rgba(138, 92, 246, 0.3);
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 28px;
+      backdrop-filter: blur(12px);
+      transition: var(--transition-smooth);
+    }
+
+    .status-pill:hover {
+      background: rgba(138, 92, 246, 0.16);
+      border-color: rgba(138, 92, 246, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a78bfa;
+      box-shadow: 0 0 10px #a78bfa;
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 5.75rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title .gradient-text {
+      background: var(--gradient-cosmic);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    .hero-lead {
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+      font-weight: 400;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-lead strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Подсказка прокрутки */
+    .hero-scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .scroll-hint-text {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .scroll-hint-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-hint-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: #a78bfa;
+      box-shadow: 0 0 8px #a78bfa;
+      animation: scrollDrop 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes scrollDrop {
+      0% { transform: translateY(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(300%); opacity: 0; }
+    }
+
+    /* Нижняя строка технологий */
+    .hero-stack-ticker {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      margin-bottom: 60px;
+    }
+
+    /* Сетка метрик */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 28px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      margin-bottom: 72px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      transition: var(--transition-smooth);
+      text-align: left;
+    }
+
+    .metrics-bar:hover {
+      border-color: var(--border-medium);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .metric-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-right: 1px solid var(--border-subtle);
+      padding-right: 20px;
+      transition: var(--transition-snappy);
+    }
+
+    .metric-card:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .metric-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      letter-spacing: -0.03em;
+    }
+
+    .metric-label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Общий заголовок секций */
+    .section-header {
+      margin-bottom: 38px;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #a78bfa;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 2.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 660px;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* Терминал */
+    .terminal-container {
+      background: rgba(11, 14, 20, 0.85);
+      border: 1px solid var(--border-medium);
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 72px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(20px);
+      transition: var(--transition-smooth);
+    }
+
+    .terminal-container:hover {
+      border-color: rgba(167, 139, 250, 0.4);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+    }
+
+    .terminal-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(16, 20, 29, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .terminal-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #272a33;
+      cursor: pointer;
+      transition: var(--transition-snappy);
+    }
+
+    .terminal-dot:hover {
+      transform: scale(1.15);
+    }
+
+    .terminal-dot.red { background: #ef4444; }
+    .terminal-dot.yellow { background: #f59e0b; }
+    .terminal-dot.green { background: #22c55e; }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .terminal-body {
+      padding: 22px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: #e2e8f0;
+      min-height: 220px;
+      max-height: 380px;
+      overflow-y: auto;
+      line-height: 1.75;
+    }
+
+    .terminal-history {
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+
+    .terminal-prompt-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-user {
+      color: #a78bfa;
+    }
+
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .terminal-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: var(--transition-snappy);
+    }
+
+    .chip-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-medium);
+      transform: translateY(-1px);
+    }
+
+    /* Вкладки фильтра */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .filter-tab {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-snappy);
+    }
+
+    .filter-tab:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--border-medium);
+    }
+
+    .filter-tab.active {
+      color: #030406;
+      background: #ffffff;
+      border-color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Карточки проектов */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+      margin-bottom: 84px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.35), transparent);
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-medium);
+      background: var(--bg-card-hover);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 14px;
+    }
+
+    .project-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+    }
+
+    .project-desc {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .stack-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      transition: var(--transition-snappy);
+    }
+
+    .stack-badge:hover {
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.09);
+      transform: translateY(-1px);
+    }
+
+    .project-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: auto;
+    }
+
+    .project-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .btn-detail {
+      font-size: 0.8125rem;
+      color: var(--text-primary);
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      padding: 7px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-snappy);
+    }
+
+    .btn-detail:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-medium);
+      transform: translateX(3px);
+    }
+
+    /* Таймлайн опыта */
+    .experience-section {
+      margin-bottom: 84px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 36px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 14px;
+      bottom: 24px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(167, 139, 250, 0.5) 0%, rgba(255, 255, 255, 0.08) 100%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -36px;
+      top: 6px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-void);
+      border: 2px solid #a78bfa;
+      box-shadow: 0 0 14px rgba(167, 139, 250, 0.5);
+      transition: var(--transition-snappy);
+    }
+
+    .timeline-item:hover .timeline-dot {
+      background: #a78bfa;
+      transform: scale(1.25);
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.8);
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(14px);
+      transition: var(--transition-smooth);
+    }
+
+    .timeline-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+      transform: translateX(6px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .timeline-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .timeline-company {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .timeline-duration {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: #c4b5fd;
+      background: rgba(138, 92, 246, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(138, 92, 246, 0.25);
+      font-weight: 500;
+    }
+
+    .timeline-role {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-bottom: 14px;
+    }
+
+    .timeline-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .timeline-list li {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      position: relative;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    .timeline-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+    }
+
+    .timeline-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Навыки */
+    .skills-section {
+      margin-bottom: 84px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+    }
+
+    .skill-category-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(14px);
+      transition: var(--transition-smooth);
+    }
+
+    .skill-category-card:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .category-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+    }
+
+    .category-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .skills-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: var(--transition-snappy);
+      cursor: pointer;
+    }
+
+    .skill-row:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(4px);
+    }
+
+    .skill-name {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .skill-level-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 3px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Образование и сертификаты */
+    .edu-certs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 84px;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(14px);
+      transition: var(--transition-smooth);
+    }
+
+    .info-card:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-card-hover);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .edu-item {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .edu-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .edu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .edu-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .edu-dates {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .edu-spec {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .edu-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: var(--transition-snappy);
+      cursor: pointer;
+    }
+
+    .cert-item:hover {
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(4px);
+    }
+
+    .cert-icon {
+      color: #a78bfa;
+      font-size: 1.1rem;
+      margin-top: 2px;
+    }
+
+    .cert-info h4 {
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .cert-info p {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 2px;
+    }
+
+    /* О себе */
+    .about-section {
+      margin-bottom: 84px;
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 38px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 38px;
+      align-items: center;
+      backdrop-filter: blur(14px);
+      transition: var(--transition-smooth);
+    }
+
+    .about-card:hover {
+      border-color: var(--border-medium);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+    }
+
+    .about-text p {
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-quote {
+      padding: 26px;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 2px solid #a78bfa;
+      border-radius: 0 14px 14px 0;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* Контакты */
+    .contact-section {
+      margin-bottom: 84px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(14px);
+    }
+
+    .contact-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: var(--transition-snappy);
+    }
+
+    .contact-row:hover {
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(3px);
+    }
+
+    .contact-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.9375rem;
+    }
+
+    .contact-copy-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      transition: var(--transition-snappy);
+    }
+
+    .contact-copy-btn:hover {
+      color: #ffffff;
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Быстрая форма */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 11px 16px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.875rem;
+      outline: none;
+      transition: var(--transition-snappy);
+    }
+
+    .form-control:focus {
+      border-color: rgba(167, 139, 250, 0.5);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 96px;
+    }
+
+    /* Подвал */
+    footer.site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 44px 0;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+    }
+
+    /* Модальное окно кейсов */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 4, 6, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-box {
+      background: #0b0d13;
+      border: 1px solid var(--border-medium);
+      border-radius: 22px;
+      max-width: 760px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 38px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      position: relative;
+      transform: translateY(24px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      transition: var(--transition-snappy);
+    }
+
+    .modal-close-btn:hover {
+      color: #ffffff;
+      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .modal-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 22px;
+      line-height: 1.3;
+    }
+
+    .modal-section {
+      margin-bottom: 24px;
+    }
+
+    .modal-section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: var(--font-mono);
+    }
+
+    .modal-section p, .modal-section li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .modal-section ul {
+      padding-left: 20px;
+    }
+
+    .ascii-diagram {
+      background: #030406;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      margin: 14px 0;
+      line-height: 1.4;
+    }
+
+    /* Всплывающие уведомления */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: rgba(14, 17, 24, 0.95);
+      border: 1px solid var(--border-medium);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: auto;
+      backdrop-filter: blur(16px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 900px) {
+      .metrics-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .metric-card:nth-child(2) {
+        border-right: none;
+      }
+      .edu-certs-grid, .contact-grid, .about-card {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: var(--bg-base);
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 18px 28px;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.75rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .metrics-bar {
+        grid-template-columns: 1fr;
+      }
+      .metric-card {
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 14px;
+      }
+      .metric-card:last-child {
+        border-bottom: none;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Стили для печати */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      #cosmosCanvas, .ambient-nebula, .scroll-progress-container, header.site-header, .terminal-container, .hero-actions, .filter-tabs, .btn-detail, .contact-card form, footer.site-footer, .toast-container, .hero-scroll-hint {
+        display: none !important;
+      }
+      .app-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .hero-title {
+        color: #000000 !important;
+        font-size: 24pt !important;
+      }
+      .hero-title .gradient-text {
+        -webkit-text-fill-color: #000000 !important;
+      }
+      .hero-lead {
+        color: #333333 !important;
+        font-size: 11pt !important;
+      }
+      .project-card, .timeline-card, .skill-category-card, .info-card {
+        border: 1px solid #cccccc !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        transform: none !important;
+        margin-bottom: 14pt !important;
+      }
+      .project-title, .timeline-company, .category-title, .edu-name {
+        color: #000000 !important;
+      }
+      .stack-badge, .timeline-duration, .skill-level-badge {
+        background: #f0f0f0 !important;
+        color: #000000 !important;
+        border: 1px solid #dddddd !important;
+      }
+    }
+  
+    /* Кастомный курсор */
+    @media (hover: hover) and (pointer: fine) {
+      body, a, button, input, textarea, select, [role="button"], .btn, .chip-btn, .filter-tab, .skill-row, .cert-item, .contact-row, .status-pill, .modal-close-btn {
+        cursor: none !important;
+      }
+    }
+
+    .custom-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      background: #ffffff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100000;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s ease, transform 0.06s ease-out;
+      box-shadow: 0 0 10px #ffffff, 0 0 20px rgba(167, 139, 250, 0.8);
+      mix-blend-mode: exclusion;
+    }
+
+    .custom-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.28s ease,
+                  background-color 0.28s ease,
+                  transform 0.12s ease-out;
+      backdrop-filter: blur(1.5px);
+    }
+
+    .custom-cursor-ring.cursor-hover {
+      width: 54px;
+      height: 54px;
+      border-color: rgba(167, 139, 250, 0.85);
+      background: rgba(167, 139, 250, 0.08);
+      box-shadow: 0 0 24px rgba(167, 139, 250, 0.35);
+    }
+
+    .custom-cursor-dot.cursor-hover {
+      transform: translate(-50%, -50%) scale(0.65);
+      background: #c4b5fd;
+    }
+
+    .custom-cursor-ring.cursor-active {
+      transform: translate(-50%, -50%) scale(0.8);
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .custom-cursor-dot, .custom-cursor-ring {
+        display: none !important;
+      }
+    }
+
+    /* Частицы при клике */
+    .stardust-particle {
+      position: fixed;
+      border-radius: 50%;
+      background: #ffffff;
+      pointer-events: none;
+      z-index: 99998;
+      box-shadow: 0 0 8px rgba(167, 139, 250, 0.8);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out;
+    }
+
+    /* Плавное появление при прокрутке */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Плавающая анимация кода */
+    @keyframes floatCode {
+      0% { transform: perspective(1000px) rotateX(10deg) rotateY(-18deg) rotateZ(3deg) translateY(0); }
+      50% { transform: perspective(1000px) rotateX(8deg) rotateY(-15deg) rotateZ(4deg) translateY(-14px); }
+      100% { transform: perspective(1000px) rotateX(10deg) rotateY(-18deg) rotateZ(3deg) translateY(0); }
+    }
+
+    .hero-floating-code {
+      animation: floatCode 10s ease-in-out infinite;
+    }
+
+  
+    /* Мини-игра «Аудит периметра» */
+    .game-section {
+      margin-bottom: 84px;
+    }
+
+    .game-container {
+      background: rgba(14, 17, 24, 0.75);
+      border: 1px solid var(--border-medium);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .game-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gradient-cosmic);
+      opacity: 0.6;
+    }
+
+    .game-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .game-step-indicators {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .game-step-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      transition: var(--transition-snappy);
+    }
+
+    .game-step-badge.active {
+      background: rgba(167, 139, 250, 0.12);
+      border-color: rgba(167, 139, 250, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(167, 139, 250, 0.25);
+    }
+
+    .game-step-badge.completed {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+    }
+
+    .game-step-badge.active .step-num {
+      background: #a78bfa;
+      color: #030406;
+      font-weight: 700;
+    }
+
+    .game-step-divider {
+      width: 20px;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .game-score-badge {
+      font-size: 0.8125rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .game-stage {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .game-stage.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stage-info {
+      margin-bottom: 24px;
+    }
+
+    .stage-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #a78bfa;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .stage-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .stage-desc {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 800px;
+    }
+
+    .game-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .game-option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition-snappy);
+    }
+
+    .game-option-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-medium);
+      transform: translateX(4px);
+    }
+
+    .game-option-btn.selected-correct {
+      background: rgba(34, 197, 94, 0.12) !important;
+      border-color: rgba(34, 197, 94, 0.6) !important;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+    }
+
+    .game-option-btn.selected-wrong {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: rgba(239, 68, 68, 0.6) !important;
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .option-icon {
+      font-size: 1.3rem;
+      margin-top: 2px;
+    }
+
+    .option-text strong {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .option-text span {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Победа и награда */
+    .victory-box {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .victory-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(167, 139, 250, 0.12);
+      border: 1px solid rgba(167, 139, 250, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: #a78bfa;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 30px rgba(167, 139, 250, 0.4);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    .victory-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .victory-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    .reward-ticket {
+      max-width: 620px;
+      margin: 0 auto;
+      background: rgba(11, 14, 20, 0.9);
+      border: 1px dashed rgba(167, 139, 250, 0.4);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 16px;
+    }
+
+    .ticket-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .ticket-field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .field-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .field-value {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .field-value.token-hash {
+      font-family: var(--font-mono);
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.08);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      display: inline-block;
+      letter-spacing: 0.05em;
+    }
+
+    .ticket-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .game-container { padding: 24px 20px; }
+      .game-step-indicators { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .game-step-divider { display: none; }
+      .ticket-actions { flex-direction: column; }
+      .ticket-actions .btn { width: 100%; justify-content: center; }
+    }
+
+  
+    /* Гравитационный вихрь и холст-антистресс */
+    .custom-cursor-ring.cursor-gravity {
+      width: 70px !important;
+      height: 70px !important;
+      border-color: #a78bfa !important;
+      border-style: dashed !important;
+      background: rgba(167, 139, 250, 0.12) !important;
+      box-shadow: 0 0 35px rgba(167, 139, 250, 0.6), inset 0 0 20px rgba(167, 139, 250, 0.4) !important;
+      animation: vortexSpin 2s linear infinite !important;
+    }
+
+    @keyframes vortexSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .custom-cursor-dot.cursor-gravity {
+      width: 10px !important;
+      height: 10px !important;
+      background: #ffffff !important;
+      box-shadow: 0 0 16px #ffffff, 0 0 30px #a78bfa !important;
+    }
+
+    .constellation-section {
+      margin-bottom: 84px;
+    }
+
+    .constellation-container {
+      background: rgba(11, 14, 20, 0.85);
+      border: 1px solid var(--border-medium);
+      border-radius: 24px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .constellation-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #38bdf8, #a78bfa, transparent);
+      opacity: 0.7;
+    }
+
+    .constellation-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .constellation-pad-canvas {
+      width: 100%;
+      height: 380px;
+      background: radial-gradient(circle at center, rgba(16, 22, 34, 0.9) 0%, rgba(6, 8, 12, 0.95) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      display: block;
+      cursor: crosshair;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .constellation-hint-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .constellation-reset-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      transition: var(--transition-snappy);
+    }
+
+    .constellation-reset-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: var(--border-medium);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Кастомный курсор -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+
+  <!-- Прогресс прокрутки -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+  </div>
+
+  <!-- Космическое свечение -->
+  <div class="ambient-nebula"></div>
+
+  <!-- Звёздный холст -->
+  <canvas id="cosmosCanvas"></canvas>
+
+  <!-- Шапка -->
+  <header class="site-header">
+    <div class="app-container">
+      <div class="nav-inner">
+        <a href="#" class="brand-mark">
+          <span class="brand-star">✦</span>
+          <span>VLADLEN</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about" class="nav-link active">Обо мне</a></li>
+          <li><a href="#projects" class="nav-link">Работы</a></li>
+          <li><a href="#experience" class="nav-link">Опыт</a></li>
+          <li><a href="#skills" class="nav-link">Стек</a></li>
+          <li><a href="#education" class="nav-link">Образование</a></li>
+          <li><a href="#constellation-pad" class="nav-link" style="color: #38bdf8;">Антистресс</a></li>
+          <li><a href="#game-challenge" class="nav-link" style="color: #a78bfa;">Квест</a></li>
+          <li><a href="#contact" class="nav-link">Контакты</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="audio-btn" id="audioToggleBtn" onclick="toggleAudio()" title="Звук и аудиоэффекты">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5v14M7 9v6M22 8v8M2 11v2"/></svg>
+          </button>
+          <button class="btn btn-secondary" id="terminalToggleBtn" title="Интерактивная консоль">
+            &gt;_ CLI
+          </button>
+          <button class="btn btn-outline" onclick="window.print()">
+            Резюме PDF
+          </button>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container">
+
+    <!-- Главная секция -->
+    <section class="hero-section reveal-item revealed" id="about">
+      
+      <!-- Плавающее окно с кодом -->
+      <div class="hero-floating-code">
+        <div>Инфраструктура и DevOps-профиль</div>
+        <div>const candidate = {</div>
+        <div>&nbsp;&nbsp;имя: "Владлен",</div>
+        <div>&nbsp;&nbsp;возраст: 19,</div>
+        <div>&nbsp;&nbsp;фокус: ["DevOps", "SysAdmin", "Сети", "SecOps"],</div>
+        <div>&nbsp;&nbsp;ОС: ["Linux (Debian/Ubuntu/Kali/Astra Linux)", "Windows Server"],</div>
+        <div>&nbsp;&nbsp;опыт_ЦОД: "3 дата-центра (Faberlic)",</div>
+        <div>&nbsp;&nbsp;критическая_инфра: "Аэропорт Домодедово (1 год 1 месяц)",</div>
+        <div>&nbsp;&nbsp;статус: "OPEN_FOR_ROLES"</div>
+        <div>};</div>
+      </div>
+
+      <div class="hero-eyebrow">ВЛАДЛЕН · ИНФРАСТРУКТУРА И DEVOPS</div>
+
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>ОТКРЫТ К ПРЕДЛОЖЕНИЯМ · DEVOPS / СИСТЕМНЫЙ ИНЖЕНЕР / ИНФРАСТРУКТУРА / IT</span>
+      </div>
+
+      <h1 class="hero-title">
+        DEVOPS И ИНФРАСТРУКТУРА
+        <span class="gradient-text">СИСТЕМЫ И БЕЗОПАСНОСТЬ</span>
+      </h1>
+
+      <p class="hero-lead">
+        19 лет. Начинающий <strong>DevOps-инженер</strong> и специалист по <strong>системной инфраструктуре</strong> с универсальным практическим бэкграундом (<strong>1,5+ года</strong> стажа). Понимаю инфраструктуру от аппаратного уровня серверов в <strong>3-х дата-центрах Faberlic</strong> и слаботочных комплексов в <strong>Аэропорту Домодедово DME</strong> (1 год 1 месяц) до администрирования <strong>Linux / Windows Server</strong>, сетей TCP/IP и практической кибербезопасности. Открыт к позициям <strong>Junior DevOps / Инженер инфраструктуры / Системный администратор / Сетевой инженер / Специалист по ИБ</strong>.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-outline">СМОТРЕТЬ РАБОТЫ</a>
+        <a href="#contact" class="btn btn-cosmic">НАПИСАТЬ МНЕ</a>
+        <a href="devops_resume_vladlen.docx" download class="btn btn-secondary" title="Скачать резюме в формате Word (.docx)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          СКАЧАТЬ РЕЗЮМЕ (.DOCX)
+        </a>
+        <a href="https://github.com/Exxcoder" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GITHUB: EXXCODER
+        </a>
+      </div>
+
+      <!-- Подсказка прокрутки -->
+      <div class="hero-scroll-hint">
+        <span class="scroll-hint-text">ЛИСТАЙ</span>
+        <div class="scroll-hint-line"></div>
+      </div>
+
+      <!-- Строка технологий -->
+      <div class="hero-stack-ticker">
+        Linux (Ubuntu/Debian) · Windows Server · Active Directory · Docker и DevOps · TCP/IP и VLAN · Серверы ЦОД · Bolid и Honeywell · C# и Bash
+      </div>
+
+      <!-- Метрики -->
+      <div class="metrics-bar reveal-item" id="metricsBar">
+        <div class="metric-card">
+          <span class="metric-value">1 год 1 мес.</span>
+          <span class="metric-label">Стаж в Аэропорту Домодедово DME (системы 2 класса)</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">3 ЦОД</span>
+          <span class="metric-label">Практика в дата-центрах Faberlic (серверные стойки)</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">1,5+ года</span>
+          <span class="metric-label">Суммарный подтвержденный практический стаж работы</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">L1–L7</span>
+          <span class="metric-label">Сквозной стек: серверы ЦОД, Linux и Windows, сети, безопасность</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Интерактивный терминал -->
+    <div class="terminal-container reveal-item" id="terminalBox">
+      <div class="terminal-topbar">
+        <div class="terminal-dots">
+          <span class="terminal-dot red" onclick="runCommand('clear')" title="Очистить"></span>
+          <span class="terminal-dot yellow" onclick="runCommand('whoami')" title="Инфо"></span>
+          <span class="terminal-dot green" onclick="runCommand('skills')" title="Стек"></span>
+        </div>
+        <div class="terminal-title">vladlen@security-workstation: ~ (zsh) — интерактивная консоль</div>
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #a78bfa;">COSMOS · SEC_CLI</div>
+      </div>
+      <div class="terminal-body" id="terminalOutput">
+        <div class="terminal-history" id="terminalHistory">Добро пожаловать в терминал.
+Введите 'help' для списка доступных команд.
+══════════════════════════════════════════════════════════════════════</div>
+        <div class="terminal-prompt-line">
+          <span class="terminal-user">vladlen@sec:~$</span>
+          <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false" placeholder="Введите команду (например: help, skills, exp, whoami)...">
+        </div>
+      </div>
+      <div class="terminal-quick-chips">
+        <button class="chip-btn" onclick="runCommand('whoami')">whoami</button>
+        <button class="chip-btn" onclick="runCommand('devops')">devops</button>
+        <button class="chip-btn" onclick="runCommand('docker')">docker</button>
+        <button class="chip-btn" onclick="runCommand('skills')">cat skills.txt</button>
+        <button class="chip-btn" onclick="runCommand('exp')">cat exp.log</button>
+        <button class="chip-btn" onclick="runCommand('projects')">ls ./projects</button>
+        <button class="chip-btn" onclick="runCommand('github')">github</button>
+        <button class="chip-btn" onclick="runCommand('contact')">curl /contact</button>
+        <button class="chip-btn" onclick="runCommand('clear')">clear</button>
+      </div>
+    </div>
+
+    <!-- Проекты -->
+    <section class="projects-section reveal-item" id="projects">
+      <div class="section-header">
+        <span class="section-eyebrow">Портфолио и кейсы</span>
+        <h2 class="section-title">Практические проекты и кейсы</h2>
+        <p class="section-desc">
+          Реализованные задачи в области построения систем видеонаблюдения, сетевой инфраструктуры, серверного оборудования и комплексной безопасности.
+        </p>
+      </div>
+
+      <!-- Фильтры -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterProjects('all', this)">Все проекты (5)</button>
+        <button class="filter-tab" onclick="filterProjects('servers', this)">Серверы и ЦОД</button>
+        <button class="filter-tab" onclick="filterProjects('networks', this)">Сети и инфраструктура</button>
+        <button class="filter-tab" onclick="filterProjects('security', this)">Безопасность и DevSecOps</button>
+      </div>
+
+      <!-- Сетка проектов -->
+      <div class="projects-grid" id="projectsGrid">
+
+        <article class="project-card" data-category="networks servers" id="work-ip-cctv-server">
+          <div>
+            <div class="project-tag">IP-видеонаблюдение · аппаратное обеспечение и сети</div>
+            <h3 class="project-title">Комплексная система IP-видеонаблюдения и выделенный сервер</h3>
+            <p class="project-desc">
+              Личный проект полного цикла: аппаратный расчет и сборка видеосервера, подключение и юстировка IP-камер, сегментация видеотрафика (VLAN), конфигурация ПО для непрерывного мониторинга, архивации и защищенного удаленного доступа.
+            </p>
+            <div class="project-stack">
+              <span class="stack-badge">IP Surveillance</span>
+              <span class="stack-badge">Сборка сервера</span>
+              <span class="stack-badge">TCP/IP</span>
+              <span class="stack-badge">RTSP / ONVIF</span>
+              <span class="stack-badge">Linux / Windows Server</span>
+            </div>
+          </div>
+          <div class="project-meta-row">
+            <span class="project-stat">● Полный цикл сборки и пусконаладки</span>
+            <button class="btn-detail" onclick="openModal('cctv-server')">
+              Кейс детально
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="networks" id="work-orion-network">
+          <div>
+            <div class="project-tag">Корпоративная инфраструктура · Орион-ПРО</div>
+            <h3 class="project-title">Локальная сеть и интеграция «Орион-ПРО» (СТРОЙЭНЕРГОСЕРВИС)</h3>
+            <p class="project-desc">
+              Построение и отладка локальной сети предприятия в рамках проектов <strong>Собянинской программы «Московское долголетие»</strong>. Монтаж и интеграция камер видеонаблюдения в систему «Орион-ПРО», пусконаладка звукового оповещения «Тромбон» для передачи эвакуационных сигналов.
+            </p>
+            <div class="project-stack">
+              <span class="stack-badge">Орион-ПРО</span>
+              <span class="stack-badge">Тромбон (СОУЭ)</span>
+              <span class="stack-badge">ЛВС / Ethernet</span>
+              <span class="stack-badge">«Московское долголетие»</span>
+              <span class="stack-badge">Сетевая безопасность</span>
+            </div>
+          </div>
+          <div class="project-meta-row">
+            <span class="project-stat">● 100% стабильность сети объекта</span>
+            <button class="btn-detail" onclick="openModal('orion-network')">
+              Кейс детально
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="servers" id="work-faberlic-dc">
+          <div>
+            <div class="project-tag">Дата-центры · серверное оборудование</div>
+            <h3 class="project-title">Обслуживание серверной инфраструктуры в 3-х дата-центрах (Faberlic)</h3>
+            <p class="project-desc">
+              Практическая работа на объектах дата-центров: сборка и ввод в эксплуатацию серверов, компонентная замена сбойных модулей (SAS/SATA HDD, блоки питания с горячей заменой, ECC RAM), конфигурирование сетевых соединений и отладка клиентских станций.
+            </p>
+            <div class="project-stack">
+              <span class="stack-badge">3 дата-центра</span>
+              <span class="stack-badge">Серверное железо</span>
+              <span class="stack-badge">RAID / Storage</span>
+              <span class="stack-badge">Корпоративные сети</span>
+              <span class="stack-badge">Troubleshooting</span>
+            </div>
+          </div>
+          <div class="project-meta-row">
+            <span class="project-stat">● Отказоустойчивость серверных стоек</span>
+            <button class="btn-detail" onclick="openModal('faberlic-dc')">
+              Кейс детально
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="networks" id="work-dme-systems">
+          <div>
+            <div class="project-tag">Критическая инфраструктура · аэропорт</div>
+            <h3 class="project-title">Слаботочные системы и панель «СИРИУС» (Аэропорт Домодедово)</h3>
+            <p class="project-desc">
+              <strong>1 год 1 месяц</strong> обслуживания систем пожарной и периметральной безопасности в Международном аэропорту Домодедово DME. Настройка Bolid и Honeywell, приборов СИРИУС, ТКП, восстановление адресных линий датчиков, учет в 1С, регламентное ТО-1 и ТО-2.
+            </p>
+            <div class="project-stack">
+              <span class="stack-badge">1 год 1 месяц в DME</span>
+              <span class="stack-badge">Панель СИРИУС</span>
+              <span class="stack-badge">Bolid и Honeywell</span>
+              <span class="stack-badge">1С: заявки и выработка</span>
+              <span class="stack-badge">Регламент ТО-1 / ТО-2</span>
+            </div>
+          </div>
+          <div class="project-meta-row">
+            <span class="project-stat">● Стратегический транспортный узел</span>
+            <button class="btn-detail" onclick="openModal('dme-systems')">
+              Кейс детально
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <article class="project-card" data-category="security" id="work-pentest-lab">
+          <div>
+            <div class="project-tag">Исследование безопасности · аудит</div>
+            <h3 class="project-title">Пентестинг-лаборатория: аудит Active Directory и средства защиты</h3>
+            <p class="project-desc">
+              Развертывание исследовательской лаборатории для анализа векторов атак и оценки эффективности СЗИ: моделирование доменной структуры AD, практическое применение средств защиты Secret Net Studio, KES, Континент АП, симуляция типовых сетевых векторов.
+            </p>
+            <div class="project-stack">
+              <span class="stack-badge">Этичный хакинг</span>
+              <span class="stack-badge">Active Directory</span>
+              <span class="stack-badge">Secret Net Studio</span>
+              <span class="stack-badge">Kaspersky Endpoint Security</span>
+              <span class="stack-badge">Континент АП / DLP</span>
+            </div>
+          </div>
+          <div class="project-meta-row">
+            <span class="project-stat">● Практический аудит уязвимостей</span>
+            <button class="btn-detail" onclick="openModal('pentest-lab')">
+              Кейс детально
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Опыт работы -->
+    <section class="experience-section reveal-item" id="experience">
+      <div class="section-header">
+        <span class="section-eyebrow">Карьерный путь</span>
+        <h2 class="section-title">Опыт практической работы</h2>
+        <p class="section-desc">
+          Хронологический путь: от компонентного обслуживания ЦОД до стратегических систем безопасности аэропорта.
+        </p>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-company">Faberlic</h3>
+              <span class="timeline-duration">2 месяца (стажировка)</span>
+            </div>
+            <div class="timeline-role">Технический специалист</div>
+            <ul class="timeline-list">
+              <li>Сборка, конфигурирование и ввод в эксплуатацию серверного оборудования для корпоративной IT-инфраструктуры.</li>
+              <li>Работа с физическим оборудованием в <strong>3-х дата-центрах</strong>: замена серверных комплектующих (HDD, блоки питания, модули оперативной памяти ECC).</li>
+              <li>Настройка сложной корпоративной сети и маршрутизации согласно техническим рекомендациям и регламентам компании.</li>
+              <li>Диагностика рабочих станций сотрудников, оптимизация производительности ОС и устранение аппаратных и программных сбоев.</li>
+            </ul>
+            <div class="timeline-badges">
+              <span class="stack-badge">3 дата-центра</span>
+              <span class="stack-badge">Сборка серверов</span>
+              <span class="stack-badge">Hot-swap комплектующие</span>
+              <span class="stack-badge">Корпоративные сети</span>
+              <span class="stack-badge">Troubleshooting</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-company">ООО «СТРОЙЭНЕРГОСЕРВИС»</h3>
+              <span class="timeline-duration">1 месяц</span>
+            </div>
+            <div class="timeline-role">Системный администратор и электромонтажник (программа «Московское долголетие»)</div>
+            <ul class="timeline-list">
+              <li>Монтаж, коммутация и настройка локальной вычислительной сети (ЛВС) на базе системы Орион-ПРО в рамках проектов Собянинской программы «Московское долголетие».</li>
+              <li>Установка, фокусировка и подключение камер видеонаблюдения с объединением в централизованную систему видеомониторинга.</li>
+              <li>Монтаж и пусконаладочные работы устройства оповещения «Тромбон» для передачи звуковых сигналов и голосового оповещения при эвакуации.</li>
+              <li>Обеспечение стабильной и безотказной работы сетевой инфраструктуры компании на объектах программы.</li>
+            </ul>
+            <div class="timeline-badges">
+              <span class="stack-badge">«Московское долголетие»</span>
+              <span class="stack-badge">Орион-ПРО</span>
+              <span class="stack-badge">Система «Тромбон»</span>
+              <span class="stack-badge">Видеонаблюдение</span>
+              <span class="stack-badge">ЛВС</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-company">Аэропорт Домодедово «DME»</h3>
+              <span class="timeline-duration">1 год 1 месяц</span>
+            </div>
+            <div class="timeline-role">Инженер ПРТ противопожарных слаботочных систем 2 класса</div>
+            <ul class="timeline-list">
+              <li>Протяжка кабельных трасс и монтаж сетевого и слаботочного оборудования на территории международного аэропортового комплекса.</li>
+              <li>Конфигурирование, наладка и ввод в эксплуатацию охранно-пожарных комплексов Bolid и Honeywell.</li>
+              <li>Комплексное техническое обслуживание адресных панелей (включая приборы «СИРИУС»), датчиков, плат ТКП и контроллеров.</li>
+              <li>Восстановление поврежденных линий датчиков, диагностика шлейфов ДПЛС, устранение замыканий и обрывов.</li>
+              <li>Обслуживание элементов водоносной системы, работа с первичными средствами пожаротушения (рукава, огнетушители).</li>
+              <li>Полноценная работа в 1С: оформление наряд-заказов, отправка запросов, ведение табелей выработки и отчетности.</li>
+              <li>Ежемесячное плановое техническое обслуживание оборудования по регламентам ТО-1 и ТО-2.</li>
+            </ul>
+            <div class="timeline-badges">
+              <span class="stack-badge">1 год 1 месяц</span>
+              <span class="stack-badge">Bolid</span>
+              <span class="stack-badge">Honeywell</span>
+              <span class="stack-badge">Панель СИРИУС</span>
+              <span class="stack-badge">ТКП</span>
+              <span class="stack-badge">1С:Предприятие</span>
+              <span class="stack-badge">ТО-1 / ТО-2</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Навыки -->
+    <section class="skills-section reveal-item" id="skills">
+      <div class="section-header">
+        <span class="section-eyebrow">Технический стек</span>
+        <h2 class="section-title">Матрица навыков и компетенций</h2>
+        <p class="section-desc">
+          Технические знания, проверенные в боевых и лабораторных условиях. Нажмите на любой навык для проверки.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">🐧</div>
+            <h3 class="category-title">DevOps и администрирование ОС</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('Linux')">
+              <span class="skill-name">Linux (Ubuntu / Debian / Kali)</span>
+              <span class="skill-level-badge">Установка и Systemd</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Windows Server')">
+              <span class="skill-name">Windows Server и Active Directory</span>
+              <span class="skill-level-badge">AD, GPO, DNS, DHCP</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Docker')">
+              <span class="skill-name">Docker и контейнеризация</span>
+              <span class="skill-level-badge">Базовый уровень</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Bash')">
+              <span class="skill-name">Bash и автоматизация</span>
+              <span class="skill-level-badge">Скриптинг</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">🛡️</div>
+            <h3 class="category-title">Информационная безопасность</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('Этичный хакинг')">
+              <span class="skill-name">Этичный хакинг и пентест</span>
+              <span class="skill-level-badge">Базовый / изучение</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Kaspersky Security Center')">
+              <span class="skill-name">Kaspersky Security Center и KES</span>
+              <span class="skill-level-badge">Базовый уровень</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Secret Net Studio')">
+              <span class="skill-name">Secret Net Studio</span>
+              <span class="skill-level-badge">Контроль доступа</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Континент АП')">
+              <span class="skill-name">Континент АП и DLP</span>
+              <span class="skill-level-badge">Защита каналов</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('SIEM')">
+              <span class="skill-name">SIEM-концепции</span>
+              <span class="skill-level-badge">Базовое понимание</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">🌐</div>
+            <h3 class="category-title">Сетевые технологии</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('TCP/IP')">
+              <span class="skill-name">Стек TCP/IP и маршрутизация</span>
+              <span class="skill-level-badge">Конфигурация</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Cisco Packet Tracer')">
+              <span class="skill-name">Cisco Packet Tracer</span>
+              <span class="skill-level-badge">Моделирование сетей</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Монтаж оборудования')">
+              <span class="skill-name">Монтаж сетевого оборудования</span>
+              <span class="skill-level-badge">Кросс, патч, стойки</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Администрирование ЛВС')">
+              <span class="skill-name">Администрирование ЛВС</span>
+              <span class="skill-level-badge">Корпоративные сети</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">📹</div>
+            <h3 class="category-title">Инженерные системы и СКУД</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('Орион-ПРО')">
+              <span class="skill-name">Орион-ПРО и Bolid</span>
+              <span class="skill-level-badge">Настройка и интеграция</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Панель СИРИУС')">
+              <span class="skill-name">Honeywell и панель СИРИУС</span>
+              <span class="skill-level-badge">Пусконаладка и ТО</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('IP Видеонаблюдение')">
+              <span class="skill-name">Системы видеонаблюдения (IP)</span>
+              <span class="skill-level-badge">Монтаж и видеосерверы</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Тромбон')">
+              <span class="skill-name">Оповещение «Тромбон»</span>
+              <span class="skill-level-badge">СОУЭ эвакуации</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">⚡</div>
+            <h3 class="category-title">Разработка и скриптинг</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('C#')">
+              <span class="skill-name">C#</span>
+              <span class="skill-level-badge">Базовые знания</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Unity')">
+              <span class="skill-name">Unity (2D / 3D)</span>
+              <span class="skill-level-badge">Опыт разработки</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Web')">
+              <span class="skill-name">Web-разработка и VS Code</span>
+              <span class="skill-level-badge">HTML / CSS / JS</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('1C')">
+              <span class="skill-name">1С:Предприятие</span>
+              <span class="skill-level-badge">Заявки, учет, выработка</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="category-icon">🏢</div>
+            <h3 class="category-title">Дата-центры и серверное железо</h3>
+          </div>
+          <div class="skills-items">
+            <div class="skill-row" onclick="interactSkill('Серверные стойки')">
+              <span class="skill-name">Обслуживание серверов в 3-х ЦОД</span>
+              <span class="skill-level-badge">Стойки 19″ и блейды</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('RAID')">
+              <span class="skill-name">RAID-массивы и Hot-swap замена</span>
+              <span class="skill-level-badge">SAS/SATA, ECC RAM, БП</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('IPMI')">
+              <span class="skill-name">Удаленное управление IPMI / iLO</span>
+              <span class="skill-level-badge">Out-of-Band</span>
+            </div>
+            <div class="skill-row" onclick="interactSkill('Дизайн')">
+              <span class="skill-name">Blender 3D, Photoshop, Premiere</span>
+              <span class="skill-level-badge">3D и графика</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Образование и сертификаты -->
+    <section class="education-section reveal-item" id="education">
+      <div class="section-header">
+        <span class="section-eyebrow">Академическая база и самообразование</span>
+        <h2 class="section-title">Образование и сертификации</h2>
+        <p class="section-desc">
+          Профильное академическое образование и непрерывное углубление в кибербезопасность.
+        </p>
+      </div>
+
+      <div class="edu-certs-grid">
+
+        <div class="info-card">
+          <h3 style="font-size: 1.25rem; font-weight: 600; color: #ffffff; margin-bottom: 22px;">
+            🎓 Профильное образование
+          </h3>
+
+          <div class="edu-item">
+            <div class="edu-item-header">
+              <h4 class="edu-name">Колледж</h4>
+              <span class="edu-dates">2023 – 2026 (2–4 курс)</span>
+            </div>
+            <div class="edu-spec">Специальность: Информационные сети и системы связи</div>
+            <p class="edu-desc">
+              Изучаемые дисциплины: сетевое администрирование, протоколы телекоммуникаций, архитектура распределенных сетей, информационная безопасность и защита данных, программирование.
+            </p>
+          </div>
+
+          <div class="edu-item">
+            <div class="edu-item-header">
+              <h4 class="edu-name">Колледж</h4>
+              <span class="edu-dates">2022 – 2023 (1 курс)</span>
+            </div>
+            <div class="edu-spec">Специальность: Информационные системы и программирование</div>
+            <p class="edu-desc">
+              Изучаемые дисциплины: основы веб-разработки, алгоритмизация, Visual Studio Code, 2D/3D в Unity, векторная и растровая графика (Adobe Illustrator).
+            </p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3 style="font-size: 1.25rem; font-weight: 600; color: #ffffff; margin-bottom: 22px;">
+            📜 Курсы и самостоятельное освоение
+          </h3>
+
+          <div class="cert-list">
+            <div class="cert-item" onclick="showToast('Курс: Этичный хакинг и пентест')">
+              <span class="cert-icon">🛡️</span>
+              <div class="cert-info">
+                <h4>Этичный хакинг и пентестинг</h4>
+                <p>Методологии разведки, сканирования уязвимостей, анализ сетевого периметра</p>
+              </div>
+            </div>
+
+            <div class="cert-item" onclick="showToast('Курс: Kaspersky Endpoint Security')">
+              <span class="cert-icon">🔒</span>
+              <div class="cert-info">
+                <h4>Kaspersky Endpoint Security и Security Center</h4>
+                <p>Политики безопасности, развертывание агентов, защита конечных точек</p>
+              </div>
+            </div>
+
+            <div class="cert-item" onclick="showToast('Курс: Active Directory, практикум')">
+              <span class="cert-icon">🏢</span>
+              <div class="cert-info">
+                <h4>Active Directory на базе практических задач</h4>
+                <p>Иерархия домена, GPO, права доступа, моделирование векторов атак на контроллер домена</p>
+              </div>
+            </div>
+
+            <div class="cert-item" onclick="showToast('Курс: Cybersecurity и Security Controls')">
+              <span class="cert-icon">⚙️</span>
+              <div class="cert-info">
+                <h4>Cybersecurity и Security Controls</h4>
+                <p>Принципы эшелонированной защиты, DLP, криптографические шлюзы (Континент АП)</p>
+              </div>
+            </div>
+
+            <div class="cert-item" onclick="showToast('Курс: Вселенная тестирования')">
+              <span class="cert-icon">🧪</span>
+              <div class="cert-info">
+                <h4>Вселенная тестирования</h4>
+                <p>Понимание архитектуры приложений, поиск логических и функциональных дефектов</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- О себе -->
+    <section class="about-section reveal-item">
+      <div class="section-header">
+        <span class="section-eyebrow">Философия и подход</span>
+        <h2 class="section-title">О себе и подход к работе</h2>
+      </div>
+
+      <div class="about-card">
+        <div class="about-text">
+          <p>
+            Мой подход к IT строится на глубоком понимании инфраструктуры «снизу вверх». Я верю, что лучший <strong>DevOps-инженер</strong> и <strong>системный администратор</strong> — это специалист, который лично монтировал стойки в дата-центрах, обжимал патч-корды, администрировал сетевые коммутаторы и знает поведение ОС Linux и Windows Server на физическом и системном уровне.
+          </p>
+          <p>
+            Практический опыт в таких компаниях, как <strong>Аэропорт Домодедово</strong> (1 год 1 месяц непрерывной эксплуатации слаботочных систем 2 класса на стратегическом объекте), <strong>Faberlic</strong> (обслуживание серверного оборудования в 3-х дата-центрах) и <strong>СТРОЙЭНЕРГОСЕРВИС</strong> (проекты программы «Московское долголетие»), дал мне высокую техническую дисциплину, умение читать схемы и устранять внештатные ситуации 24/7.
+          </p>
+          <p>
+            Благодаря широкой технической базе я могу эффективно работать на стыке <strong>DevOps, системного администрирования, сетевой инженерии и информационной безопасности</strong>, обеспечивая отказоустойчивость, надежность сервисов и безопасность данных компании.
+          </p>
+        </div>
+
+        <div class="about-quote">
+          «Безопасность — это не застывшее состояние, а гармоничный, непрерывный процесс. Чтобы защитить периметр, нужно понимать природу каждого его звена.»
+        </div>
+      </div>
+    </section>
+
+    <!-- Антистресс-холст -->
+    <section class="constellation-section reveal-item" id="constellation-pad">
+      <div class="section-header" style="text-align: center;">
+        <span class="section-eyebrow" style="color: #38bdf8;">Интерактивный холст · рисование светом</span>
+        <h2 class="section-title">Световое рисование и узлы защиты</h2>
+        <p class="section-desc" style="margin: 8px auto 0;">
+          Зажмите левую кнопку мыши и рисуйте на холсте — светящаяся белая линия мягко затухает и стирается спустя пару секунд. Проводите линию через плавающие узлы, активируя их гармоничное звучание!
+        </p>
+      </div>
+
+      <div class="constellation-container">
+        <div class="constellation-topbar">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; letter-spacing: 0.1em; text-transform: uppercase;">
+              ✦ Матрица узлов безопасности
+            </div>
+            <h3 style="font-size: 1.25rem; font-weight: 600; color: #ffffff; margin-top: 4px;">
+              Интерактивный холст: плетение защитной паутины
+            </h3>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-family: var(--font-mono); font-size: 0.8125rem; color: #94a3b8;">СОЕДИНЕНО УЗЛОВ:</span>
+            <span id="constellationScore" style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: #38bdf8;">0 / 8</span>
+          </div>
+        </div>
+
+        <canvas class="constellation-pad-canvas" id="constellationCanvas"></canvas>
+
+        <div class="constellation-hint-bar">
+          <div>
+            ✨ <span style="color: #ffffff; font-weight: 600;">Световое рисование:</span> зажмите мышь и рисуйте любые узоры. Линия мягко подсвечена белым свечением и плавно исчезает через 3 секунды.
+          </div>
+          <button class="constellation-reset-btn" onclick="resetConstellationPad()">
+            Очистить холст
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Мини-игра -->
+    <section class="game-section reveal-item" id="game-challenge">
+      <div class="section-header" style="text-align: center;">
+        <span class="section-eyebrow">Интерактивная оценка · мини-игра</span>
+        <h2 class="section-title">Интерактивный квест: «Аудит периметра»</h2>
+        <p class="section-desc" style="margin: 8px auto 0;">
+          Мини-игра для технических специалистов и HR: пройдите 3 ключевых рубежа защиты (L1/L2 физика, L3/L4 сеть, L7 Active Directory) и разблокируйте персональный инвайт-токен на собеседование.
+        </p>
+      </div>
+
+      <div class="game-container">
+        <div class="game-header">
+          <div class="game-step-indicators">
+            <div class="game-step-badge active" id="stepBadge1">
+              <span class="step-num">1</span>
+              <span>L1/L2 Периметр и видео</span>
+            </div>
+            <div class="game-step-divider"></div>
+            <div class="game-step-badge" id="stepBadge2">
+              <span class="step-num">2</span>
+              <span>L3/L4 Маршрутизация и сеть</span>
+            </div>
+            <div class="game-step-divider"></div>
+            <div class="game-step-badge" id="stepBadge3">
+              <span class="step-num">3</span>
+              <span>L7 Харденинг AD и ОС</span>
+            </div>
+          </div>
+          <div class="game-score-badge">
+            <span style="color: #94a3b8;">СТАТУС ЗАЩИТЫ:</span>
+            <span id="gameShieldPercent" style="color: #a78bfa; font-family: var(--font-mono); font-weight: 700;">0%</span>
+          </div>
+        </div>
+
+        <div class="game-stage active" id="gameStage1">
+          <div class="stage-info">
+            <div class="stage-tag">Рубеж 1: физический уровень и видеонаблюдение</div>
+            <h3 class="stage-title">Изоляция сегмента IP-камер от корпоративной сети</h3>
+            <p class="stage-desc">
+              На объекте развернута система видеонаблюдения и охранное оповещение «Тромбон». Поступил подозрительный трафик со стороны камер. Какое архитектурное решение применит Владлен для защиты периметра?
+            </p>
+          </div>
+          <div class="game-options">
+            <button class="game-option-btn" onclick="selectGameOption(1, 'wrong', this)">
+              <div class="option-icon">⚠️</div>
+              <div class="option-text">
+                <strong>Оставить камеры в общем сетевом пуле</strong>
+                <span>Отключить логирование, чтобы снизить нагрузку на коммутаторы</span>
+              </div>
+            </button>
+            <button class="game-option-btn correct" onclick="selectGameOption(1, 'correct', this)">
+              <div class="option-icon">🛡️</div>
+              <div class="option-text">
+                <strong>Выделить отдельный изолированный VLAN и защитить RTSP</strong>
+                <span>Настроить ACL на L3-коммутаторе и доступ к видеосерверу строго через VPN</span>
+              </div>
+            </button>
+            <button class="game-option-btn" onclick="selectGameOption(1, 'wrong', this)">
+              <div class="option-icon">❌</div>
+              <div class="option-text">
+                <strong>Открыть прямой доступ в интернет через NAT</strong>
+                <span>Пробросить порт 554 напрямую на внешний белый IP-адрес</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="game-stage" id="gameStage2">
+          <div class="stage-info">
+            <div class="stage-tag">Рубеж 2: сетевая безопасность и ЦОД</div>
+            <h3 class="stage-title">Аудит портов и предотвращение утечек данных</h3>
+            <p class="stage-desc">
+              В дата-центре серверная стойка подключена к корпоративному ядру. Сканер зафиксировал попытки несанкционированного сканирования портов управления IPMI. Какое действие обеспечит отказоустойчивость?
+            </p>
+          </div>
+          <div class="game-options">
+            <button class="game-option-btn" onclick="selectGameOption(2, 'wrong', this)">
+              <div class="option-icon">⚠️</div>
+              <div class="option-text">
+                <strong>Использовать стандартные пароли IPMI</strong>
+                <span>Полагаться только на закрытый физический контур дата-центра</span>
+              </div>
+            </button>
+            <button class="game-option-btn correct" onclick="selectGameOption(2, 'correct', this)">
+              <div class="option-icon">🛡️</div>
+              <div class="option-text">
+                <strong>Вынести Out-of-Band (IPMI) в выделенную Management-сеть</strong>
+                <span>Включить строгую фильтрацию по MAC/IP и шифрование криптошлюзом Континент АП</span>
+              </div>
+            </button>
+            <button class="game-option-btn" onclick="selectGameOption(2, 'wrong', this)">
+              <div class="option-icon">❌</div>
+              <div class="option-text">
+                <strong>Отключить мониторинг сбоев</strong>
+                <span>Перезагрузить сервер без анализа сетевых дампов</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="game-stage" id="gameStage3">
+          <div class="stage-info">
+            <div class="stage-tag">Рубеж 3: домен и активная защита</div>
+            <h3 class="stage-title">Предотвращение атак на Active Directory и KES</h3>
+            <p class="stage-desc">
+              Пентестер имитирует атаку Pass-the-Hash и пытается повысить привилегии до Domain Admin. Как Владлен предотвратит компрометацию контроллера домена?
+            </p>
+          </div>
+          <div class="game-options">
+            <button class="game-option-btn correct" onclick="selectGameOption(3, 'correct', this)">
+              <div class="option-icon">🛡️</div>
+              <div class="option-text">
+                <strong>Tier-модель администрирования, Secret Net Studio и LAPS</strong>
+                <span>Ограничить кэширование учетных данных, настроить строгие политики GPO и KES</span>
+              </div>
+            </button>
+            <button class="game-option-btn" onclick="selectGameOption(3, 'wrong', this)">
+              <div class="option-icon">⚠️</div>
+              <div class="option-text">
+                <strong>Добавить локального пользователя в группу Enterprise Admins</strong>
+                <span>Упростить права ради быстрого исправления сбоя</span>
+              </div>
+            </button>
+            <button class="game-option-btn" onclick="selectGameOption(3, 'wrong', this)">
+              <div class="option-icon">❌</div>
+              <div class="option-text">
+                <strong>Отключить Windows Defender и KES на время сканирования</strong>
+                <span>Чтобы не создавались ложные алерты в Event Viewer</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="game-stage" id="gameStageVictory">
+          <div class="victory-box">
+            <div class="victory-icon">✦</div>
+            <h3 class="victory-title">Периметр успешно защищен!</h3>
+            <p class="victory-desc">
+              Поздравляем! Вы только что протестировали подход Владлена к эшелонированной безопасности на уровнях L1–L7. Все уязвимости устранены, архитектура оптимизирована.
+            </p>
+
+            <div class="reward-ticket">
+              <div class="ticket-header">
+                <span>ПРОВЕРЕННЫЙ ТОКЕН КАНДИДАТА</span>
+                <span style="color: #a78bfa;">● ПОДТВЕРЖДЕН</span>
+              </div>
+              <div class="ticket-body">
+                <div class="ticket-field">
+                  <span class="field-label">КАНДИДАТ:</span>
+                  <span class="field-value">Владлен (19 лет) · DevOps, SysAdmin и инфраструктура</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="field-label">СПЕЦИАЛИЗАЦИЯ:</span>
+                  <span class="field-value">Сетевая безопасность, AD, слаботочные системы DME, серверы ЦОД</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="field-label">ИНВАЙТ-ТОКЕН:</span>
+                  <span class="field-value token-hash">VLADLEN-DEVOPS-INFRA-2026</span>
+                </div>
+              </div>
+              <div class="ticket-actions">
+                <a href="mailto:vlad.vip8888@gmail.com?subject=Приглашение%20на%20собеседование%20(Token:%20VLADLEN-HIRE-2026)&body=Здравствуйте,%20Владлен!%20Мы%20прошли%20квест%20на%20вашем%20сайте%20и%20хотим%20пригласить%20вас%20на%20собеседование." class="btn btn-cosmic">
+                  Пригласить на собеседование в 1 клик
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </a>
+                <button class="btn btn-outline" onclick="copyContact('VLADLEN-DEVOPS-INFRA-2026', 'Инвайт-токен скопирован в буфер!')">
+                  Скопировать токен
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contact-section reveal-item" id="contact">
+      <div class="section-header">
+        <span class="section-eyebrow">Связаться со мной</span>
+        <h2 class="section-title">Контакты для связи</h2>
+        <p class="section-desc">
+          Открыт к предложениям на позиции Junior DevOps, инженера инфраструктуры, системного администратора, специалиста ИБ, стажировкам и проектной работе.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+
+        <div class="contact-card">
+          <h3 style="font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 8px;">
+            Прямые каналы связи
+          </h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 22px;">
+            Всегда на связи по телефону, электронной почте и на GitHub.
+          </p>
+
+          <div class="contact-links-list">
+
+            <div class="contact-row">
+              <a href="https://github.com/Exxcoder" target="_blank" rel="noopener noreferrer" class="contact-row-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                <span>github.com/Exxcoder</span>
+              </a>
+              <button class="contact-copy-btn" onclick="copyContact('https://github.com/Exxcoder', 'Ссылка на GitHub скопирована')">Копировать</button>
+            </div>
+
+            <div class="contact-row">
+              <a href="tel:+79019015442" class="contact-row-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+7 (901) 901-54-42</span>
+              </a>
+              <button class="contact-copy-btn" onclick="copyContact('+7 (901) 901-54-42', 'Телефон скопирован')">Копировать</button>
+            </div>
+
+            <div class="contact-row">
+              <a href="mailto:vlad.vip8888@gmail.com" class="contact-row-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>vlad.vip8888@gmail.com</span>
+              </a>
+              <button class="contact-copy-btn" onclick="copyContact('vlad.vip8888@gmail.com', 'Email скопирован')">Копировать</button>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-row-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Москва и удаленная работа</span>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #86efac;">● Доступен</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3 style="font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 8px;">
+            Быстрое сообщение
+          </h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 22px;">
+            Отправьте приглашение на собеседование или запрос на сотрудничество.
+          </p>
+
+          <form id="contactForm" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+              <label class="form-label" for="senderName">Ваше имя или компания</label>
+              <input type="text" id="senderName" class="form-control" placeholder="HR или Tech Lead..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="senderContact">Ваш контакт (Email или Telegram)</label>
+              <input type="text" id="senderContact" class="form-control" placeholder="example@company.com или @telegram" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="senderMessage">Сообщение или детали вакансии</label>
+              <textarea id="senderMessage" class="form-control" placeholder="Здравствуйте, Владлен! Мы ищем Junior DevOps..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-cosmic" style="width: 100%; justify-content: center; margin-top: 10px;">
+              Отправить сообщение
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Подвал -->
+  <footer class="site-footer">
+    <div class="app-container">
+      <p>© 2026 Владлен. Портфолио-резюме. DevOps, системная инфраструктура и безопасность.</p>
+      <p style="margin-top: 8px; font-family: var(--font-mono); font-size: 0.78rem;">
+        <a href="https://github.com/Exxcoder" target="_blank" rel="noopener noreferrer" style="color: #94a3b8; text-decoration: none;">GitHub: Exxcoder</a>
+        <span style="color: #334155; margin: 0 10px;">/</span>
+        <span style="color: #64748b;">СТАТУС: ПРОВЕРЕН · ГОТОВ К РАБОТЕ</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Модальное окно кейсов -->
+  <div class="modal-backdrop" id="caseModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close-btn" onclick="closeModal()" aria-label="Закрыть">&times;</button>
+      <div id="modalContent">
+      </div>
+    </div>
+  </div>
+
+  <!-- Уведомления -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // =========================================================================
+    // 3D-космос и звёздное поле
+    // =========================================================================
+    const canvas = document.getElementById('cosmosCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const STAR_COUNT = 450;
+    const FOV = 400;
+    const stars = [];
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+
+    class Star {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(initial = false) {
+        this.x = (Math.random() - 0.5) * width * 2.5;
+        this.y = (Math.random() - 0.5) * height * 2.5;
+        this.z = initial ? Math.random() * 1000 + 1 : 1000;
+        this.size = Math.random() * 1.5 + 0.6;
+        this.baseAlpha = Math.random() * 0.7 + 0.3;
+        this.twinkleSpeed = Math.random() * 0.03 + 0.01;
+        this.twinkleOffset = Math.random() * Math.PI * 2;
+        const tints = [
+          '255, 255, 255',
+          '240, 245, 255',
+          '200, 220, 255',
+          '216, 180, 254'
+        ];
+        this.color = tints[Math.floor(Math.random() * tints.length)];
+      }
+
+      update(speed, parallaxX, parallaxY) {
+        if (isGravityActive) {
+          const k = FOV / this.z;
+          const px = (this.x - parallaxX) * k + width / 2;
+          const py = (this.y - parallaxY) * k + height / 2;
+          
+          const dx = mouseCurX - px;
+          const dy = mouseCurY - py;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist > 15 && dist < 500) {
+            const angle = Math.atan2(dy, dx);
+            const force = 180 / Math.max(30, dist);
+            this.x += (Math.cos(angle + 1.2) * force * 1.5 + Math.cos(angle) * force) * (this.z / FOV);
+            this.y += (Math.sin(angle + 1.2) * force * 1.5 + Math.sin(angle) * force) * (this.z / FOV);
+          }
+          this.z -= speed * 0.4;
+        } else {
+          this.z -= speed;
+        }
+
+        if (this.z <= 0) {
+          this.reset(false);
+        }
+      }
+
+      draw(c, parallaxX, parallaxY, time) {
+        const k = FOV / this.z;
+        const px = (this.x - parallaxX) * k + width / 2;
+        const py = (this.y - parallaxY) * k + height / 2;
+
+        if (px < -50 || px > width + 50 || py < -50 || py > height + 50) return;
+
+        const projectedSize = Math.max(0.4, this.size * k);
+        const depthAlpha = Math.min(1, Math.max(0, (1 - this.z / 1000) * 1.3));
+        const twinkle = Math.sin(time * this.twinkleSpeed + this.twinkleOffset) * 0.25 + 0.75;
+        const alpha = Math.min(1, this.baseAlpha * depthAlpha * twinkle);
+
+        c.save();
+        c.beginPath();
+        c.arc(px, py, projectedSize, 0, Math.PI * 2);
+        c.fillStyle = `rgba(${this.color}, ${alpha})`;
+        c.fill();
+
+        if (projectedSize > 1.4 && alpha > 0.4) {
+          c.beginPath();
+          c.arc(px, py, projectedSize * 2.2, 0, Math.PI * 2);
+          c.fillStyle = `rgba(${this.color}, ${alpha * 0.18})`;
+          c.fill();
+        }
+        c.restore();
+      }
+    }
+
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push(new Star());
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      const nx = (e.clientX - width / 2) / (width / 2);
+      const ny = (e.clientY - height / 2) / (height / 2);
+      targetMouseX = nx * 220;
+      targetMouseY = ny * 180;
+    });
+
+    let lastTime = 0;
+
+    function renderCosmos(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = timestamp - lastTime;
+      lastTime = timestamp;
+
+      mouseX += (targetMouseX - mouseX) * 0.055;
+      mouseY += (targetMouseY - mouseY) * 0.055;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const timeSec = timestamp * 0.001;
+
+      const speed = 0.55;
+      for (let i = 0; i < stars.length; i++) {
+        stars[i].update(speed, mouseX, mouseY);
+        stars[i].draw(ctx, mouseX, mouseY, timeSec);
+      }
+
+      requestAnimationFrame(renderCosmos);
+    }
+
+    requestAnimationFrame(renderCosmos);
+
+    // Аудио и синтезатор
+    let audioEnabled = false;
+    let audioCtx = null;
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audioToggleBtn');
+      if (audioEnabled) {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        btn.classList.add('active');
+        playSynthBeep(880, 0.08, 'sine');
+        showToast('Космические звуковые эффекты включены');
+      } else {
+        btn.classList.remove('active');
+        showToast('Звуковые эффекты выключены');
+      }
+    }
+
+    function playSynthBeep(freq = 440, duration = 0.08, type = 'sine') {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Прогресс прокрутки
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const bar = document.getElementById('scrollProgressBar');
+      if (bar) bar.style.width = scrolled + '%';
+    });
+
+    // Мобильное меню
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileBtn && navLinks) {
+      mobileBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('open'));
+      });
+    }
+
+    // Уведомления
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 350);
+      }, 3000);
+    }
+
+    function copyContact(text, feedbackMsg) {
+      playSynthBeep(650, 0.06, 'sine');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(feedbackMsg || 'Скопировано в буфер обмена');
+        }).catch(() => fallbackCopy(text, feedbackMsg));
+      } else {
+        fallbackCopy(text, feedbackMsg);
+      }
+    }
+
+    function fallbackCopy(text, feedbackMsg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(feedbackMsg || 'Скопировано в буфер обмена');
+    }
+
+    function interactSkill(name) {
+      playSynthBeep(720, 0.05, 'sine');
+      showToast(`Навык проверен: ${name}`);
+    }
+
+    // Терминал
+    const terminalBox = document.getElementById('terminalBox');
+    const terminalToggleBtn = document.getElementById('terminalToggleBtn');
+    const terminalInput = document.getElementById('terminalInput');
+    const terminalHistory = document.getElementById('terminalHistory');
+
+    terminalToggleBtn.addEventListener('click', () => {
+      terminalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      terminalInput.focus();
+      playSynthBeep(520, 0.08, 'sine');
+    });
+
+    terminalInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = terminalInput.value.trim();
+        if (cmd) {
+          executeTerminalCommand(cmd);
+          terminalInput.value = '';
+        }
+      }
+    });
+
+    function runCommand(cmd) {
+      executeTerminalCommand(cmd);
+    }
+
+    function executeTerminalCommand(cmd) {
+      playSynthBeep(480, 0.04, 'square');
+      const cleanCmd = cmd.toLowerCase().trim();
+      let output = '';
+
+      if (cleanCmd === 'help') {
+        output = `Список доступных команд:
+  whoami      — профиль кандидата и целевые направления (DevOps, SysAdmin, Infra, Sec)
+  devops      — компетенции в автоматизации, виртуализации и администрировании
+  skills      — технические навыки и стек технологий
+  exp         — хронология опыта работы (Faberlic -> СТРОЙЭНЕРГОСЕРВИС -> DME)
+  github      — ссылка на профиль GitHub (https://github.com/Exxcoder)
+  projects    — список реализованных проектов и кейсов
+  contact     — контактные данные для связи
+  clear       — очистить терминал
+  print       — открыть версию для печати и PDF`;
+            } else if (cleanCmd === 'devops' || cleanCmd === 'infra') {
+        output = `DEVOPS И ИНФРАСТРУКТУРА:
+• ОС: Linux (Ubuntu, Debian, Kali) — установка, конфигурация, системные службы systemd, харденинг
+• Серверы: Windows Server (Active Directory, GPO, DNS, DHCP), разграничение доступа
+• Оборудование: компонентное обслуживание стоек в 3-х дата-центрах Faberlic (HDD RAID, ECC RAM, БП)
+• Сети: TCP/IP, VLAN, статическая и динамическая маршрутизация, Cisco Packet Tracer, VPN
+• Автоматизация и скрипты: базовые знания C#, Bash-скрипты, системные утилиты, 1C API
+• Безопасность периметра (DevSecOps): KES, Secret Net Studio, Континент АП, аудит уязвимостей`;
+            } else if (cleanCmd === 'docker') {
+        output = `DOCKER И КОНТЕЙНЕРИЗАЦИЯ:
+• Концепции контейнеризации, работа с Docker CLI и Dockerfile
+• Сетевые режимы (bridge, host), volume persistent storage
+• Понимание контейнерных архитектур и принципов CI/CD`;
+      } else if (cleanCmd === 'whoami') {
+        output = `ПОЛЬЗОВАТЕЛЬ: Владлен (19 лет)
+РОЛЬ: Junior DevOps Engineer / системный администратор / специалист по инфраструктуре
+СПЕЦИАЛИЗАЦИЯ: системное администрирование Linux и Windows, инфраструктура ЦОД, сети, безопасность
+GITHUB: https://github.com/Exxcoder
+ЛОКАЦИЯ: Москва (офис, гибрид, удаленно)
+СТАТУС: открыт к предложениям (DevOps, сисадмин, инженер инфраструктуры, ИБ)`;
+      } else if (cleanCmd === 'skills' || cleanCmd === 'cat skills.txt') {
+        output = `ТЕХНИЧЕСКИЙ СТЕК:
+• ОС: Linux (Ubuntu, Debian, Kali), Windows Server (AD, GPO), Windows 10/11
+• ПО ИБ: Secret Net Studio, Kaspersky Security Center (KES), Континент АП, DLP, SIEM (база)
+• Сети: TCP/IP, Cisco Packet Tracer, монтаж ЛВС, коммутация
+• Системы безопасности: Орион-ПРО, СИРИУС, Bolid, Honeywell, Тромбон (СОУЭ)
+• Программирование: C#, Unity 2D/3D, Web (HTML/CSS/JS)
+• Железо: компонентный ремонт серверов (3 ЦОД), сборка ПК и видеосерверов`;
+      } else if (cleanCmd === 'exp' || cleanCmd === 'cat exp.log') {
+        output = `ХРОНОЛОГИЯ ОПЫТА:
+1. Faberlic (стажировка, 2 мес.) — технический специалист
+   • 3 дата-центра, сборка и замена серверного железа (HDD, RAM, БП), корпоративная сеть
+2. ООО «СТРОЙЭНЕРГОСЕРВИС» (1 мес.) — системный администратор и электромонтажник
+   • Собянинская программа «Московское долголетие», ЛВС на базе Орион-ПРО, камеры, Тромбон
+3. Аэропорт Домодедово «DME» (1 год 1 месяц) — инженер ПРТ слаботочных систем 2 класса
+   • стратегический объект: Bolid и Honeywell, панель СИРИУС, ТКП, восстановление линий датчиков, 1С, ТО-1/ТО-2`;
+      } else if (cleanCmd === 'projects' || cleanCmd === 'ls ./projects') {
+        output = `всего 5
+ip-cctv-server      (сборка сервера и настройка IP-видеонаблюдения)
+orion-network       (ЛВС и Орион-ПРО, программа «Московское долголетие»)
+faberlic-dc         (серверная инфраструктура 3-х дата-центров)
+dme-security        (слаботочный комплекс Bolid и панель СИРИУС в DME)
+pentest-lab         (лаборатория этичного хакинга и аудит AD)`;
+      } else if (cleanCmd === 'github') {
+        output = `GITHUB: https://github.com/Exxcoder
+Профиль: Exxcoder. Репозитории и пет-проекты доступны по ссылке.`;
+      } else if (cleanCmd === 'contact' || cleanCmd === 'curl /contact') {
+        output = `КОНТАКТЫ:
+• GitHub: https://github.com/Exxcoder
+• Телефон: +7 (901) 901-54-42
+• Email: vlad.vip8888@gmail.com
+• Локация: Москва`;
+      } else if (cleanCmd === 'clear') {
+        terminalHistory.textContent = '';
+        return;
+      } else if (cleanCmd === 'print') {
+        window.print();
+        output = 'Запущен диалог печати резюме в PDF...';
+      } else {
+        output = `zsh: команда не найдена: ${cmd}. Введите 'help' для справки.`;
+      }
+
+      terminalHistory.textContent += `
+vladlen@sec:~$ ${cmd}
+${output}
+`;
+      terminalBox.querySelector('.terminal-body').scrollTop = terminalBox.querySelector('.terminal-body').scrollHeight;
+    }
+
+    // Фильтр проектов
+    function filterProjects(category, clickedBtn) {
+      playSynthBeep(600, 0.05, 'sine');
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      clickedBtn.classList.add('active');
+
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => {
+        const cats = card.getAttribute('data-category') || '';
+        if (category === 'all' || cats.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Данные для модальных окон
+    const modalData = {
+      'cctv-server': {
+        tag: 'IP-видеонаблюдение · аппаратное обеспечение и сети',
+        title: 'Комплексная система IP-видеонаблюдения и выделенный сервер',
+        problem: 'Необходимость построения надежной локальной системы видеофиксации с высокими требованиями к пропускной способности, непрерывной 24/7 записи видеопотоков без потери кадров и изоляции видеосегмента от внешней сети.',
+        architecture: `[IP Камеры RTSP] ──────> [PoE Switch (VLAN 10)] ──────> [Сервер Видеонаблюдения]
+                                                           ├── Хранилище (RAID-1)
+                                                           ├── ПО мониторинга
+                                                           └── Защищенный VPN Gateway`,
+        implementation: [
+          'Подбор оптимальных аппаратных компонентов сервера (многопоточный процессор, 16GB+ RAM, надежный блок питания с запасом мощности).',
+          'Сборка, тестирование стабильности под нагрузкой и установка серверной ОС.',
+          'Монтаж и коммутация IP-камер, настройка сетевых интерфейсов, битрейта и компрессии H.264/H.265.',
+          'Изоляция подсети видеонаблюдения для предотвращения несанкционированного доступа к видеоархиву.',
+          'Конфигурация детекторов движения, циклической перезаписи и удаленного шифрованного доступа.'
+        ],
+        results: 'Система успешно запущена, обеспечивает бесперебойную фиксацию видеопотока, быстрый доступ к архиву и защищена от внешнего сканирования.'
+      },
+      'orion-network': {
+        tag: 'Корпоративная инфраструктура · Орион-ПРО',
+        title: 'Локальная сеть и интеграция «Орион-ПРО» (СТРОЙЭНЕРГОСЕРВИС, «Московское долголетие»)',
+        problem: 'Развертывание защищенной сетевой инфраструктуры на объектах программы «Московское долголетие» с одновременным подключением охранного видеонаблюдения и интеграцией с системой оповещения при ЧС.',
+        architecture: `[Рабочие станции ЛВС] ──> [Коммутатор Cisco/D-Link] <── [АРМ Орион-ПРО]
+                                     │                            │
+                            [IP-Камеры периметра]         [Устройство «Тромбон»]`,
+        implementation: [
+          'Проектирование и физический монтаж кабельных трасс (витая пара Cat 5e/6), установка патч-панелей и розеток на объектах Собянинской программы «Московское долголетие».',
+          'Настройка адресации TCP/IP, шлюзов по умолчанию и исключение коллизий в сети.',
+          'Установка и подключение камер наблюдения, ввод в единую систему мониторинга.',
+          'Пусконаладка специализированного звукового оповещения «Тромбон» для эвакуационного оповещения персонала.',
+          'Разграничение прав операторов в ПО «Орион-ПРО» для защиты конфигураций от модификаций.'
+        ],
+        results: 'Полная готовность объекта к сдаче, нулевой уровень сетевых сбоев, интеграция противопожарных и эвакуационных сценариев.'
+      },
+      'faberlic-dc': {
+        tag: 'Дата-центры · серверное оборудование',
+        title: 'Обслуживание серверной инфраструктуры в 3-х дата-центрах (Faberlic)',
+        problem: 'Поддержание непрерывной работы сотен высоконагруженных серверов, оперативная замена вышедших из строя модулей без простоя сервисов компании.',
+        architecture: `[Стойка DC #1/#2/#3] ──> [Blade / 1U-2U Серверы] ──> [Модули Hot-Swap HDD/RAM]
+                                       │
+                         [Диагностика IPMI / iLO] ──> [Регламентная замена]`,
+        implementation: [
+          'Выездные работы на площадках 3-х крупнейших коммерческих дата-центров.',
+          'Диагностика аппаратных неисправностей серверов с использованием индикации и консоли управления.',
+          'Горячая и плановая замена дисковых накопителей (HDD/SSD) в аппаратных RAID-массивах с контролем ребилда.',
+          'Замена модулей питания и оперативной памяти ECC DDR4/DDR5.',
+          'Сборка новых серверов с нуля в соответствии с техническими регламентами IT-отдела компании.'
+        ],
+        results: 'Успешное закрытие инцидентов по замене оборудования, исключение деградации производительности корпоративных баз данных и приложений.'
+      },
+      'dme-systems': {
+        tag: 'Критическая инфраструктура · аэропорт',
+        title: 'Слаботочные системы и панель «СИРИУС» (Аэропорт Домодедово — 1 год 1 месяц)',
+        problem: 'Обеспечение безотказной работы систем пожарной безопасности и адресных датчиков на объекте с высочайшими требованиями к надежности (Международный аэропорт).',
+        architecture: `[Адресные датчики ДИП] ──> [Линия ДПЛС] ──> [Панель «СИРИУС» / Bolid]
+                                                    │
+                                           [1C: Учет ТО-1/ТО-2]`,
+        implementation: [
+          'Более года (1 год 1 месяц) непрерывной эксплуатации слаботочных систем 2 класса в Аэропорту Домодедово.',
+          'Монтаж и протяжка сигнальных кабелей в жестких условиях инфраструктуры аэропорта.',
+          'Программирование и конфигурирование адресной панели «СИРИУС» (Bolid) и систем Honeywell.',
+          'Поиск обрывов, коротких замыканий и помех в адресных шлейфах ДПЛС, восстановление работоспособности датчиков.',
+          'Обслуживание датчиков дыма, тепла, пламени, панелей ТКП, насосных систем пожаротушения.',
+          'Фиксация каждого регламентного действия в корпоративной системе 1С с формированием отчетов.'
+        ],
+        results: 'Безупречное прохождение ежемесячных регламентов ТО-1 и ТО-2, своевременное устранение внештатных срабатываний.'
+      },
+      'pentest-lab': {
+        tag: 'Исследование безопасности · аудит',
+        title: 'Пентестинг-лаборатория: аудит Active Directory и средства защиты',
+        problem: 'Практическое исследование того, как средства защиты информации (Secret Net Studio, KES, Континент АП) реагируют на реальные действия пентестера и злоумышленника.',
+        architecture: `[Kali Linux / Pentest Box] ──> [Сетевой сегмент Lab] ──> [Windows Server 2022 DC]
+       └── Nmap, BloodHound, Impacket                       ├── Active Directory GPO
+                                                            ├── Secret Net Studio
+                                                            └── Kaspersky KES`,
+        implementation: [
+          'Развертывание виртуализированного домена на Windows Server с клиентскими машинами Windows 10.',
+          'Настройка групповых политик (GPO), учетных записей, групп безопасности и списков контроля доступа (ACL).',
+          'Инсталляция и настройка СЗИ: Secret Net Studio (контроль входа, контроль устройств, замкнутая программная среда), KES и Континент АП.',
+          'Проведение тестов на проникновение: сетевое сканирование (Nmap), анализ конфигурации Kerberos, выявление слабых паролей и избыточных прав.',
+          'Анализ логов безопасности в Event Viewer и моделирование сценариев выявления аномалий для SIEM.'
+        ],
+        results: 'Глубокое практическое понимание механик работы СЗИ и практических методов выявления уязвимостей в корпоративных сетях.'
+      }
+    };
+
+    function openModal(caseKey) {
+      playSynthBeep(680, 0.08, 'sine');
+      const data = modalData[caseKey];
+      if (!data) return;
+
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="modal-tag">${data.tag}</div>
+        <h3 class="modal-title">${data.title}</h3>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Постановка задачи</div>
+          <p>${data.problem}</p>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Топология и архитектура</div>
+          <pre class="ascii-diagram">${data.architecture}</pre>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Что было реализовано</div>
+          <ul>
+            ${data.implementation.map(step => `<li>${step}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Итог и практическая ценность</div>
+          <p>${data.results}</p>
+        </div>
+      `;
+
+      const modal = document.getElementById('caseModal');
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('caseModal');
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'caseModal') {
+        closeModal();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      playSynthBeep(880, 0.12, 'sine');
+      const name = document.getElementById('senderName').value;
+      showToast(`Спасибо, ${name}! Сообщение отправлено Владлену.`);
+      e.target.reset();
+    }
+  
+    // =========================================================================
+    // Кастомный курсор
+    // =========================================================================
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseCurX = window.innerWidth / 2;
+    let mouseCurY = window.innerHeight / 2;
+    let ringCurX = mouseCurX;
+    let ringCurY = mouseCurY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseCurX = e.clientX;
+      mouseCurY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = mouseCurX + 'px';
+        cursorDot.style.top = mouseCurY + 'px';
+      }
+    });
+
+    function renderRing() {
+      ringCurX += (mouseCurX - ringCurX) * 0.18;
+      ringCurY += (mouseCurY - ringCurY) * 0.18;
+      if (cursorRing) {
+        cursorRing.style.left = ringCurX + 'px';
+        cursorRing.style.top = ringCurY + 'px';
+      }
+      requestAnimationFrame(renderRing);
+    }
+    renderRing();
+
+    const hoverTargets = 'a, button, input, textarea, .btn, .chip-btn, .filter-tab, .skill-row, .cert-item, .contact-row, .status-pill, .modal-close-btn, .project-card, .metric-card';
+    
+    function attachCursorHover() {
+      document.querySelectorAll(hoverTargets).forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursorRing.classList.add('cursor-hover');
+          cursorDot.classList.add('cursor-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorRing.classList.remove('cursor-hover');
+          cursorDot.classList.remove('cursor-hover');
+        });
+      });
+    }
+    attachCursorHover();
+
+    window.addEventListener('mousedown', () => {
+      if (cursorRing) cursorRing.classList.add('cursor-active');
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (cursorRing) cursorRing.classList.remove('cursor-active');
+    });
+
+    // Частицы при клике
+    window.addEventListener('click', (e) => {
+      for (let i = 0; i < 6; i++) {
+        const p = document.createElement('div');
+        p.className = 'stardust-particle';
+        const size = Math.random() * 4 + 2;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = e.clientX + 'px';
+        p.style.top = e.clientY + 'px';
+        document.body.appendChild(p);
+
+        const angle = (Math.PI * 2 / 6) * i + (Math.random() - 0.5) * 0.5;
+        const distance = Math.random() * 40 + 25;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+
+        requestAnimationFrame(() => {
+          p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+          p.style.opacity = '0';
+        });
+
+        setTimeout(() => p.remove(), 650);
+      }
+    });
+
+    // Появление при прокрутке
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal-item').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+  
+    // =========================================================================
+    // Мини-игра «Аудит периметра»
+    // =========================================================================
+    let currentStage = 1;
+    let gameScore = 0;
+
+    function selectGameOption(stage, type, btn) {
+      if (type === 'correct') {
+        btn.classList.add('selected-correct');
+        playSynthBeep(880, 0.15, 'sine');
+        showToast('Рубеж пройден! Защита усилена.');
+        
+        const currentBadge = document.getElementById(`stepBadge${stage}`);
+        if (currentBadge) {
+          currentBadge.classList.remove('active');
+          currentBadge.classList.add('completed');
+        }
+
+        gameScore += 33.3;
+        const scoreElem = document.getElementById('gameShieldPercent');
+        if (scoreElem) scoreElem.innerText = Math.round(gameScore) + '%';
+
+        setTimeout(() => {
+          document.getElementById(`gameStage${stage}`).classList.remove('active');
+          if (stage < 3) {
+            currentStage = stage + 1;
+            document.getElementById(`gameStage${currentStage}`).classList.add('active');
+            const nextBadge = document.getElementById(`stepBadge${currentStage}`);
+            if (nextBadge) nextBadge.classList.add('active');
+          } else {
+            if (scoreElem) scoreElem.innerText = '100% [ОФФЕР РАЗБЛОКИРОВАН]';
+            document.getElementById('gameStageVictory').classList.add('active');
+            playSynthBeep(1046, 0.3, 'sine');
+            showToast('Поздравляем! Оффер-пакет разблокирован.');
+          }
+        }, 600);
+
+      } else {
+        btn.classList.add('selected-wrong');
+        playSynthBeep(200, 0.15, 'sawtooth');
+        showToast('Уязвимость не устранена! Попробуйте другой вариант.');
+        setTimeout(() => btn.classList.remove('selected-wrong'), 600);
+      }
+    }
+
+  
+    // =========================================================================
+    // Гравитационный вихрь
+    // =========================================================================
+    let isGravityActive = false;
+
+    window.addEventListener('mousedown', (e) => {
+      const tag = e.target.tagName.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+      
+      isGravityActive = true;
+      if (cursorRing) cursorRing.classList.add('cursor-gravity');
+      if (cursorDot) cursorDot.classList.add('cursor-gravity');
+      playSynthBeep(260, 0.15, 'sawtooth');
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isGravityActive) {
+        isGravityActive = false;
+        if (cursorRing) cursorRing.classList.remove('cursor-gravity');
+        if (cursorDot) cursorDot.classList.remove('cursor-gravity');
+        playSynthBeep(520, 0.25, 'sine');
+      }
+    });
+
+  
+    // =========================================================================
+    // Холст-антистресс
+    // =========================================================================
+    const cPadCanvas = document.getElementById('constellationCanvas');
+    const cPadCtx = cPadCanvas ? cPadCanvas.getContext('2d') : null;
+    let cPadWidth = 0;
+    let cPadHeight = 0;
+
+    function resizeCPad() {
+      if (!cPadCanvas) return;
+      cPadWidth = cPadCanvas.width = cPadCanvas.clientWidth;
+      cPadHeight = cPadCanvas.height = cPadCanvas.clientHeight;
+    }
+    window.addEventListener('resize', resizeCPad);
+    setTimeout(resizeCPad, 100);
+
+    const nodeLabels = [
+      'Firewall', 'SIEM Core', 'Active Directory', 'CCTV RTSP', 
+      'VPN Gateway', 'IDS/IPS', 'Proxy Guard', 'Patch Panel DME'
+    ];
+
+    const pentatonicNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+
+    let cNodes = [];
+    let connectedNodes = [];
+
+    let isDrawingOnPad = false;
+    let drawnStrokes = [];
+    let currentStroke = null;
+    const STROKE_LIFETIME = 3000;
+
+    function initConstellationNodes() {
+      if (!cPadCanvas) return;
+      cNodes = [];
+      connectedNodes = [];
+      const w = cPadWidth || 800;
+      const h = cPadHeight || 380;
+
+      for (let i = 0; i < nodeLabels.length; i++) {
+        cNodes.push({
+          id: i,
+          label: nodeLabels[i],
+          x: Math.random() * (w - 140) + 70,
+          y: Math.random() * (h - 120) + 60,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: 8,
+          freq: pentatonicNotes[i % pentatonicNotes.length],
+          color: i % 2 === 0 ? '#38bdf8' : '#a78bfa'
+        });
+      }
+      updateCScore();
+    }
+
+    function updateCScore() {
+      const scoreElem = document.getElementById('constellationScore');
+      if (scoreElem) {
+        scoreElem.innerText = `${connectedNodes.length} / ${nodeLabels.length}`;
+        if (connectedNodes.length === nodeLabels.length) {
+          scoreElem.innerText = `${connectedNodes.length} / ${nodeLabels.length} [ЩИТ АКТИВЕН ✦]`;
+          scoreElem.style.color = '#86efac';
+        } else {
+          scoreElem.style.color = '#38bdf8';
+        }
+      }
+    }
+
+    function resetConstellationPad() {
+      connectedNodes = [];
+      drawnStrokes = [];
+      currentStroke = null;
+      initConstellationNodes();
+      playSynthBeep(320, 0.1, 'sine');
+      showToast('Холст очищен');
+    }
+
+    let cPadMouse = { x: -1000, y: -1000 };
+
+    if (cPadCanvas) {
+      cPadCanvas.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isDrawingOnPad = true;
+        const rect = cPadCanvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        currentStroke = [{ x: mx, y: my, time: Date.now() }];
+        drawnStrokes.push(currentStroke);
+        checkNodeInteraction(mx, my);
+      });
+
+      window.addEventListener('mouseup', () => {
+        isDrawingOnPad = false;
+        currentStroke = null;
+      });
+
+      cPadCanvas.addEventListener('mousemove', (e) => {
+        const rect = cPadCanvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        cPadMouse.x = mx;
+        cPadMouse.y = my;
+
+        if (isDrawingOnPad && currentStroke) {
+          currentStroke.push({ x: mx, y: my, time: Date.now() });
+          checkNodeInteraction(mx, my);
+        }
+      });
+
+      cPadCanvas.addEventListener('mouseleave', () => {
+        cPadMouse.x = -1000;
+        cPadMouse.y = -1000;
+      });
+
+      cPadCanvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const touch = e.touches[0];
+        const rect = cPadCanvas.getBoundingClientRect();
+        const mx = touch.clientX - rect.left;
+        const my = touch.clientY - rect.top;
+        isDrawingOnPad = true;
+        currentStroke = [{ x: mx, y: my, time: Date.now() }];
+        drawnStrokes.push(currentStroke);
+        checkNodeInteraction(mx, my);
+      }, { passive: false });
+
+      cPadCanvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (!isDrawingOnPad || !currentStroke) return;
+        const touch = e.touches[0];
+        const rect = cPadCanvas.getBoundingClientRect();
+        const mx = touch.clientX - rect.left;
+        const my = touch.clientY - rect.top;
+        cPadMouse.x = mx;
+        cPadMouse.y = my;
+        currentStroke.push({ x: mx, y: my, time: Date.now() });
+        checkNodeInteraction(mx, my);
+      }, { passive: false });
+
+      cPadCanvas.addEventListener('touchend', () => {
+        isDrawingOnPad = false;
+        currentStroke = null;
+      });
+    }
+
+    function checkNodeInteraction(mx, my) {
+      for (let node of cNodes) {
+        const dist = Math.hypot(node.x - mx, node.y - my);
+        if (dist < 26) {
+          if (!connectedNodes.includes(node.id)) {
+            connectedNodes.push(node.id);
+            playSynthBeep(node.freq, 0.28, 'sine');
+            showToast(`Узел [${node.label}] активирован!`);
+            updateCScore();
+
+            if (connectedNodes.length === cNodes.length) {
+              setTimeout(() => {
+                playSynthBeep(523.25, 0.4, 'sine');
+                setTimeout(() => playSynthBeep(659.25, 0.5, 'sine'), 100);
+                showToast('✦ Защитная паутина полностью сформирована!');
+              }, 200);
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    function renderConstellationPad() {
+      if (!cPadCtx || !cPadCanvas) return;
+      cPadCtx.clearRect(0, 0, cPadWidth, cPadHeight);
+      const now = Date.now();
+
+      cPadCtx.save();
+      cPadCtx.lineCap = 'round';
+      cPadCtx.lineJoin = 'round';
+
+      for (let s = drawnStrokes.length - 1; s >= 0; s--) {
+        const stroke = drawnStrokes[s];
+        
+        while (stroke.length > 0 && (now - stroke[0].time) > STROKE_LIFETIME) {
+          stroke.shift();
+        }
+
+        if (stroke.length === 0) {
+          drawnStrokes.splice(s, 1);
+          continue;
+        }
+
+        for (let i = 0; i < stroke.length - 1; i++) {
+          const p1 = stroke[i];
+          const p2 = stroke[i + 1];
+          const age = now - p2.time;
+          const progress = age / STROKE_LIFETIME;
+          const alpha = Math.max(0, 1 - progress);
+
+          if (alpha <= 0) continue;
+
+          cPadCtx.beginPath();
+          cPadCtx.moveTo(p1.x, p1.y);
+          cPadCtx.lineTo(p2.x, p2.y);
+
+          cPadCtx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+          cPadCtx.shadowColor = `rgba(255, 255, 255, ${alpha * 0.8})`;
+          cPadCtx.shadowBlur = 12 * alpha;
+          cPadCtx.lineWidth = 2.8 * alpha + 1;
+          cPadCtx.stroke();
+
+          cPadCtx.strokeStyle = `rgba(216, 180, 254, ${alpha * 0.35})`;
+          cPadCtx.shadowColor = `rgba(167, 139, 250, ${alpha * 0.6})`;
+          cPadCtx.shadowBlur = 22 * alpha;
+          cPadCtx.lineWidth = 5 * alpha + 1.2;
+          cPadCtx.stroke();
+        }
+      }
+      cPadCtx.restore();
+
+      for (let i = 0; i < cNodes.length; i++) {
+        for (let j = i + 1; j < cNodes.length; j++) {
+          const d = Math.hypot(cNodes[i].x - cNodes[j].x, cNodes[i].y - cNodes[j].y);
+          if (d < 160) {
+            cPadCtx.beginPath();
+            cPadCtx.moveTo(cNodes[i].x, cNodes[i].y);
+            cPadCtx.lineTo(cNodes[j].x, cNodes[j].y);
+            cPadCtx.strokeStyle = `rgba(255, 255, 255, ${(1 - d / 160) * 0.08})`;
+            cPadCtx.lineWidth = 1;
+            cPadCtx.stroke();
+          }
+        }
+      }
+
+      if (connectedNodes.length > 1) {
+        cPadCtx.beginPath();
+        const first = cNodes[connectedNodes[0]];
+        cPadCtx.moveTo(first.x, first.y);
+        for (let k = 1; k < connectedNodes.length; k++) {
+          const n = cNodes[connectedNodes[k]];
+          cPadCtx.lineTo(n.x, n.y);
+        }
+        cPadCtx.strokeStyle = '#38bdf8';
+        cPadCtx.lineWidth = 2.2;
+        cPadCtx.shadowColor = '#38bdf8';
+        cPadCtx.shadowBlur = 14;
+        cPadCtx.stroke();
+        cPadCtx.shadowBlur = 0;
+      }
+
+      for (let node of cNodes) {
+        const mouseDist = Math.hypot(node.x - cPadMouse.x, node.y - cPadMouse.y);
+        if (mouseDist < 140) {
+          cPadCtx.beginPath();
+          cPadCtx.moveTo(node.x, node.y);
+          cPadCtx.lineTo(cPadMouse.x, cPadMouse.y);
+          cPadCtx.strokeStyle = `rgba(167, 139, 250, ${(1 - mouseDist / 140) * 0.35})`;
+          cPadCtx.lineWidth = 1.2;
+          cPadCtx.stroke();
+        }
+      }
+
+      for (let node of cNodes) {
+        node.x += node.vx;
+        node.y += node.vy;
+
+        if (node.x < 30 || node.x > cPadWidth - 30) node.vx *= -1;
+        if (node.y < 30 || node.y > cPadHeight - 30) node.vy *= -1;
+
+        const isConnected = connectedNodes.includes(node.id);
+        const isHovered = Math.hypot(node.x - cPadMouse.x, node.y - cPadMouse.y) < 26;
+
+        cPadCtx.beginPath();
+        cPadCtx.arc(node.x, node.y, isHovered ? 14 : (isConnected ? 11 : 8), 0, Math.PI * 2);
+        cPadCtx.fillStyle = isConnected ? 'rgba(56, 189, 248, 0.25)' : 'rgba(255, 255, 255, 0.06)';
+        cPadCtx.fill();
+
+        cPadCtx.beginPath();
+        cPadCtx.arc(node.x, node.y, isConnected ? 6 : 4.5, 0, Math.PI * 2);
+        cPadCtx.fillStyle = isConnected ? '#38bdf8' : (isHovered ? '#ffffff' : node.color);
+        cPadCtx.fill();
+
+        cPadCtx.font = '11px monospace';
+        cPadCtx.fillStyle = isConnected ? '#ffffff' : 'rgba(226, 232, 240, 0.65)';
+        cPadCtx.fillText(node.label, node.x + 12, node.y + 4);
+      }
+
+      requestAnimationFrame(renderConstellationPad);
+    }
+
+    setTimeout(() => {
+      initConstellationNodes();
+      renderConstellationPad();
+    }, 200);
+
+  </script>
+</body>
+</html>

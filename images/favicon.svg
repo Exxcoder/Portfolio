@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#030406"/>
+  <circle cx="32" cy="32" r="28" stroke="url(#cosmicGrad)" stroke-width="2" stroke-dasharray="4 2"/>
+  <path d="M32 12L36 28L52 32L36 36L32 52L28 36L12 32L28 28Z" fill="url(#cosmicGrad)"/>
+  <circle cx="32" cy="32" r="3" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="cosmicGrad" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" fill="none">
+  <rect width="800" height="360" rx="16" fill="#06080c" stroke="rgba(255,255,255,0.08)"/>
+  <!-- Grid Lines -->
+  <line x1="50" y1="180" x2="750" y2="180" stroke="rgba(167, 139, 250, 0.2)" stroke-dasharray="4 4"/>
+  <!-- Nodes -->
+  <!-- Node 1: DC & Hardware -->
+  <g transform="translate(100, 140)">
+    <rect width="140" height="80" rx="10" fill="#0f131c" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="70" y="36" font-family="monospace" font-size="12" fill="#38bdf8" text-anchor="middle" font-weight="bold">3x FABERLIC DC</text>
+    <text x="70" y="56" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">RAID / IPMI / Hardware</text>
+  </g>
+  <!-- Node 2: Network & VLAN -->
+  <g transform="translate(330, 140)">
+    <rect width="140" height="80" rx="10" fill="#0f131c" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="70" y="36" font-family="monospace" font-size="12" fill="#a78bfa" text-anchor="middle" font-weight="bold">CORE NETWORKS</text>
+    <text x="70" y="56" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">TCP/IP / VLAN / VPN</text>
+  </g>
+  <!-- Node 3: DME & Bolid -->
+  <g transform="translate(560, 140)">
+    <rect width="140" height="80" rx="10" fill="#0f131c" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="70" y="36" font-family="monospace" font-size="12" fill="#86efac" text-anchor="middle" font-weight="bold">DME AIRPORT</text>
+    <text x="70" y="56" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Bolid / Sirius / 1C</text>
+  </g>
+  <!-- Connecting lines -->
+  <path d="M240 180 L330 180" stroke="#38bdf8" stroke-width="2"/>
+  <path d="M470 180 L560 180" stroke="#a78bfa" stroke-width="2"/>
+  <!-- Status pill -->
+  <rect x="330" y="40" width="140" height="30" rx="15" fill="rgba(34,197,94,0.1)" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="60" font-family="monospace" font-size="11" fill="#86efac" text-anchor="middle">INFRASTRUCTURE ACTIVE</text>
+</svg>

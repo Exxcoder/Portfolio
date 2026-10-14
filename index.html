@@ -972,14 +972,14 @@
             Отправьте приглашение на собеседование или запрос на сотрудничество.
           </p>
 
-          <form id="contactForm" onsubmit="handleFormSubmit(event)">
+          <form id="contactForm" action="https://formspree.io/f/moejkrbg" method="POST" onsubmit="handleFormSubmit(event)">
             <div class="form-group">
               <label class="form-label" for="senderName">Ваше имя / Компания</label>
               <input type="text" id="senderName" name="name" class="form-control" placeholder="HR / Tech Lead..." required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="senderContact">Ваш контакт (Email / Telegram)</label>
-              <input type="text" id="senderContact" name="contact" class="form-control" placeholder="example@company.com или @telegram" required>
+              <label class="form-label" for="senderContact">Ваш контакт (Email)</label>
+              <input type="email" id="senderContact" name="email" class="form-control" placeholder="example@company.com" required>
             </div>
             <div class="form-group">
               <label class="form-label" for="senderMessage">Сообщение / Детали вакансии</label>

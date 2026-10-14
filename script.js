@@ -34,7 +34,6 @@ function toggleAudio() {
 
 function playSound(soundName, freq = 440, duration = 0.08, type = 'sine') {
   if (!audioEnabled) return;
-
   const audio = soundFiles[soundName];
   if (audio) {
     try {
@@ -103,9 +102,7 @@ let mouseCurY = window.innerHeight / 2;
 let isGravityActive = false;
 
 class Star {
-  constructor() {
-    this.reset(true);
-  }
+  constructor() { this.reset(true); }
 
   reset(initial = false) {
     this.x = (Math.random() - 0.5) * cWidth * 3.0;
@@ -127,12 +124,7 @@ class Star {
     this.twinkleSpeed = Math.random() * 0.04 + 0.01;
     this.twinkleOffset = Math.random() * Math.PI * 2;
 
-    const tints = [
-      '255, 255, 255',
-      '240, 245, 255',
-      '210, 230, 255',
-      '220, 195, 255'
-    ];
+    const tints = ['255, 255, 255', '240, 245, 255', '210, 230, 255', '220, 195, 255'];
     this.color = tints[Math.floor(Math.random() * tints.length)];
   }
 
@@ -141,7 +133,6 @@ class Star {
       const k = FOV / this.z;
       const px = (this.x - parallaxX) * k + cWidth / 2;
       const py = (this.y - parallaxY) * k + cHeight / 2;
-
       const dx = mouseCurX - px;
       const dy = mouseCurY - py;
       const dist = Math.hypot(dx, dy);
@@ -156,17 +147,13 @@ class Star {
     } else {
       this.z -= speed;
     }
-
-    if (this.z <= 0) {
-      this.reset(false);
-    }
+    if (this.z <= 0) this.reset(false);
   }
 
   draw(c, parallaxX, parallaxY, time) {
     const k = FOV / this.z;
     const px = (this.x - parallaxX) * k + cWidth / 2;
     const py = (this.y - parallaxY) * k + cHeight / 2;
-
     if (px < -60 || px > cWidth + 60 || py < -60 || py > cHeight + 60) return;
 
     const projectedSize = Math.max(0.35, this.size * k);
@@ -189,9 +176,7 @@ class Star {
 }
 
 class Meteor {
-  constructor() {
-    this.reset();
-  }
+  constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * cWidth;
     this.y = Math.random() * (cHeight * 0.4);
@@ -202,18 +187,13 @@ class Meteor {
     this.decay = Math.random() * 0.02 + 0.015;
     this.active = false;
   }
-  spawn() {
-    this.reset();
-    this.active = true;
-  }
+  spawn() { this.reset(); this.active = true; }
   update() {
     if (!this.active) return;
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
     this.alpha -= this.decay;
-    if (this.alpha <= 0) {
-      this.active = false;
-    }
+    if (this.alpha <= 0) this.active = false;
   }
   draw(c) {
     if (!this.active || this.alpha <= 0) return;
@@ -222,7 +202,6 @@ class Meteor {
     const grad = c.createLinearGradient(tailX, tailY, this.x, this.y);
     grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
     grad.addColorStop(1, `rgba(200, 220, 255, ${this.alpha * 0.9})`);
-
     c.beginPath();
     c.moveTo(tailX, tailY);
     c.lineTo(this.x, this.y);
@@ -232,12 +211,8 @@ class Meteor {
   }
 }
 
-for (let i = 0; i < STAR_COUNT; i++) {
-  stars.push(new Star());
-}
-for (let i = 0; i < 3; i++) {
-  meteors.push(new Meteor());
-}
+for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
+for (let i = 0; i < 3; i++) meteors.push(new Meteor());
 
 setInterval(() => {
   const m = meteors.find(item => !item.active);
@@ -278,19 +253,16 @@ function renderCosmos(timestamp) {
     stars[i].update(speed, mouseX, mouseY);
     stars[i].draw(cosmosCtx, mouseX, mouseY, timeSec);
   }
-
   for (let i = 0; i < meteors.length; i++) {
     meteors[i].update();
     meteors[i].draw(cosmosCtx);
   }
-
   requestAnimationFrame(renderCosmos);
 }
-
 requestAnimationFrame(renderCosmos);
 
 // ==========================================================================
-// 3. Кастомный курсор (Белая точка + плавное кольцо)
+// 3. Кастомный курсор
 // ==========================================================================
 const cursorDot = document.getElementById('cursorDot');
 const cursorRing = document.getElementById('cursorRing');
@@ -372,13 +344,12 @@ window.addEventListener('click', (e) => {
       p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
       p.style.opacity = '0';
     });
-
     setTimeout(() => p.remove(), 650);
   }
 });
 
 // ==========================================================================
-// 4. Интерактивный холст: рисование белым светом + узлы защиты
+// 4. Интерактивный холст: рисование + узлы защиты
 // ==========================================================================
 const cPadCanvas = document.getElementById('constellationCanvas');
 const cPadCtx = cPadCanvas ? cPadCanvas.getContext('2d') : null;
@@ -564,7 +535,6 @@ function renderConstellationPad() {
       const age = now - p2.time;
       const progress = age / STROKE_LIFETIME;
       const alpha = Math.max(0, 1 - progress);
-
       if (alpha <= 0) continue;
 
       cPadCtx.beginPath();
@@ -661,7 +631,7 @@ function renderConstellationPad() {
 }
 
 // ==========================================================================
-// 5. Мобильное меню, навигация, прогресс прокрутки, reveal
+// 5. Мобильное меню, прокрутка, reveal
 // ==========================================================================
 const mobileBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
@@ -701,19 +671,13 @@ const revealObserver = new IntersectionObserver((entries) => {
       entry.target.classList.add('revealed');
     }
   });
-}, {
-  threshold: 0.08,
-  rootMargin: '0px 0px -30px 0px'
-});
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-document.querySelectorAll('.reveal-item').forEach(el => {
-  revealObserver.observe(el);
-});
+document.querySelectorAll('.reveal-item').forEach(el => revealObserver.observe(el));
 
 // ==========================================================================
-// 6. Мини-игра «Аудит периметра & Оффер-токен»
+// 6. Мини-игра «Аудит периметра»
 // ==========================================================================
-let currentStage = 1;
 let gameScore = 0;
 
 function selectGameOption(stage, type, btn) {
@@ -737,10 +701,10 @@ function selectGameOption(stage, type, btn) {
       if (curStageEl) curStageEl.classList.remove('active');
 
       if (stage < 3) {
-        currentStage = stage + 1;
-        const nextStageEl = document.getElementById(`gameStage${currentStage}`);
+        const nextStage = stage + 1;
+        const nextStageEl = document.getElementById(`gameStage${nextStage}`);
         if (nextStageEl) nextStageEl.classList.add('active');
-        const nextBadge = document.getElementById(`stepBadge${currentStage}`);
+        const nextBadge = document.getElementById(`stepBadge${nextStage}`);
         if (nextBadge) nextBadge.classList.add('active');
       } else {
         if (scoreElem) scoreElem.innerText = '100% [ОФФЕР РАЗБЛОКИРОВАН]';
@@ -759,7 +723,7 @@ function selectGameOption(stage, type, btn) {
 }
 
 // ==========================================================================
-// 7. Интерактивный CLI Терминал
+// 7. Терминал
 // ==========================================================================
 const terminalBox = document.getElementById('terminalBox');
 const terminalToggleBtn = document.getElementById('terminalToggleBtn');
@@ -788,9 +752,7 @@ if (terminalInput) {
   });
 }
 
-function runCommand(cmd) {
-  executeTerminalCommand(cmd);
-}
+function runCommand(cmd) { executeTerminalCommand(cmd); }
 
 function executeTerminalCommand(cmd) {
   playSound('beep', 480, 0.04, 'square');
@@ -1038,9 +1000,7 @@ function closeModal() {
 }
 
 function closeModalOnBackdrop(e) {
-  if (e.target.id === 'caseModal') {
-    closeModal();
-  }
+  if (e.target.id === 'caseModal') closeModal();
 }
 
 document.addEventListener('keydown', (e) => {
@@ -1048,7 +1008,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ==========================================================================
-// 10. Вспомогательные функции: тосты, копирование, навыки
+// 10. Тосты, копирование, навыки
 // ==========================================================================
 function showToast(message) {
   const container = document.getElementById('toastContainer');
@@ -1094,7 +1054,7 @@ function interactSkill(name) {
 }
 
 // ==========================================================================
-// 11. Форма обратной связи (Formspree + fallback)
+// 11. Форма обратной связи
 // ==========================================================================
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -1102,8 +1062,8 @@ function handleFormSubmit(e) {
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalHtml = submitBtn ? submitBtn.innerHTML : '';
 
-  // Если у формы задан action — отправляем через Formspree
-  if (form.action && form.action.startsWith('http')) {
+  // Если у формы задан action (Formspree и т.п.) — отправляем fetch'ем
+  if (form.action && form.action.startsWith('http') && !form.action.includes('#')) {
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.innerHTML = `
@@ -1149,7 +1109,7 @@ function handleFormSubmit(e) {
   }
 }
 
-// CSS для спиннера формы
+// Спиннер формы
 (function injectSpinCSS() {
   const style = document.createElement('style');
   style.textContent = `
@@ -1160,7 +1120,7 @@ function handleFormSubmit(e) {
 })();
 
 // ==========================================================================
-// 12. Финальный запуск (после загрузки DOM)
+// 12. Финальный запуск
 // ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
   resizeCPad();

@@ -73,7 +73,7 @@ function synthBeep(freq = 440, duration = 0.08, type = 'sine') {
 }
 
 // ==========================================================================
-// 2. 3D-космос со сверхплотным звёздным полем (950+ звёзд и метеоры)
+// 2. 3D-космос со звёздным полем и метеорами
 // ==========================================================================
 const cosmosCanvas = document.getElementById('cosmosCanvas');
 const cosmosCtx = cosmosCanvas ? cosmosCanvas.getContext('2d') : null;
@@ -349,7 +349,7 @@ window.addEventListener('click', (e) => {
 });
 
 // ==========================================================================
-// 4. Интерактивный холст: рисование + узлы защиты
+// 4. Интерактивный холст: световое рисование + узлы защиты
 // ==========================================================================
 const cPadCanvas = document.getElementById('constellationCanvas');
 const cPadCtx = cPadCanvas ? cPadCanvas.getContext('2d') : null;
@@ -514,7 +514,7 @@ function renderConstellationPad() {
   cPadCtx.clearRect(0, 0, cPadWidth, cPadHeight);
   const now = Date.now();
 
-  // 1. Светящиеся белые линии с затуханием
+  // Светящиеся линии
   cPadCtx.save();
   cPadCtx.lineCap = 'round';
   cPadCtx.lineJoin = 'round';
@@ -556,7 +556,7 @@ function renderConstellationPad() {
   }
   cPadCtx.restore();
 
-  // 2. Фоновые линии связей между узлами
+  // Фоновые линии между узлами
   for (let i = 0; i < cNodes.length; i++) {
     for (let j = i + 1; j < cNodes.length; j++) {
       const d = Math.hypot(cNodes[i].x - cNodes[j].x, cNodes[i].y - cNodes[j].y);
@@ -571,7 +571,7 @@ function renderConstellationPad() {
     }
   }
 
-  // 3. Соединённые активные узлы
+  // Соединённые узлы
   if (connectedNodes.length > 1) {
     cPadCtx.beginPath();
     const first = cNodes[connectedNodes[0]];
@@ -588,7 +588,7 @@ function renderConstellationPad() {
     cPadCtx.shadowBlur = 0;
   }
 
-  // 4. Линия притяжения от курсора к близким узлам
+  // Притяжение курсора к узлам
   for (let node of cNodes) {
     const mouseDist = Math.hypot(node.x - cPadMouse.x, node.y - cPadMouse.y);
     if (mouseDist < 140) {
@@ -601,7 +601,7 @@ function renderConstellationPad() {
     }
   }
 
-  // 5. Движение и отрисовка узлов
+  // Отрисовка узлов
   for (let node of cNodes) {
     node.x += node.vx;
     node.y += node.vy;
@@ -631,7 +631,7 @@ function renderConstellationPad() {
 }
 
 // ==========================================================================
-// 5. Мобильное меню, прокрутка, reveal
+// 5. Мобильное меню, прогресс-бар и появление элементов (Reveal)
 // ==========================================================================
 const mobileBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
@@ -723,7 +723,7 @@ function selectGameOption(stage, type, btn) {
 }
 
 // ==========================================================================
-// 7. Терминал
+// 7. Терминал CLI
 // ==========================================================================
 const terminalBox = document.getElementById('terminalBox');
 const terminalToggleBtn = document.getElementById('terminalToggleBtn');
@@ -1054,62 +1054,63 @@ function interactSkill(name) {
 }
 
 // ==========================================================================
-// 11. Форма обратной связи
+// 11. Форма обратной связи: отправка через Formspree AJAX / Fetch
 // ==========================================================================
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalHtml = submitBtn ? submitBtn.innerHTML : '';
 
-  // Если у формы задан action (Formspree и т.п.) — отправляем fetch'ем
-  if (form.action && form.action.startsWith('http') && !form.action.includes('#')) {
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
-          <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
-          <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Отправка...
-      `;
-    }
+  // Предотвращение повторных кликов и включение спиннера
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
+        <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Отправка...
+    `;
+  }
 
-    fetch(form.action, {
+  const endpoint = form.action || 'https://formspree.io/f/moejkrbg';
+
+  try {
+    const formData = new FormData(form);
+    const response = await fetch(endpoint, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    })
-      .then(response => {
-        if (!response.ok) throw new Error('Ошибка при отправке');
-        return response.json();
-      })
-      .then(() => {
-        playSound('success', 880, 0.15, 'sine');
-        showToast('Спасибо! Ваше сообщение отправлено.');
-        form.reset();
-      })
-      .catch(error => {
-        console.error('Ошибка:', error);
-        playSound('beep', 200, 0.1, 'sawtooth');
-        showToast('Произошла ошибка. Пожалуйста, попробуйте позже.');
-      })
-      .finally(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalHtml;
-        }
-      });
-  } else {
-    // Fallback: локальное подтверждение без реальной отправки
-    playSound('success', 880, 0.12, 'sine');
-    const name = document.getElementById('senderName')?.value || 'Гость';
-    showToast(`Спасибо, ${name}! Сообщение сохранено.`);
-    form.reset();
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      playSound('success', 880, 0.15, 'sine');
+      showToast('Спасибо! Ваше сообщение отправлено на почту.');
+      form.reset();
+    } else {
+      const data = await response.json().catch(() => null);
+      let errMsg = 'Не удалось отправить форму.';
+      if (data && data.errors && data.errors.length > 0) {
+        errMsg = data.errors.map(err => err.message).join(', ');
+      }
+      throw new Error(errMsg);
+    }
+  } catch (error) {
+    console.error('Ошибка отправки формы Formspree:', error);
+    playSound('beep', 200, 0.1, 'sawtooth');
+    showToast('Ошибка при отправке: проверьте введенные данные.');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+    }
   }
 }
 
-// Спиннер формы
+// Внедрение стилей спиннера для кнопки отправки
 (function injectSpinCSS() {
   const style = document.createElement('style');
   style.textContent = `
@@ -1120,7 +1121,7 @@ function handleFormSubmit(e) {
 })();
 
 // ==========================================================================
-// 12. Финальный запуск
+// 12. Инициализация при загрузке документа
 // ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
   resizeCPad();

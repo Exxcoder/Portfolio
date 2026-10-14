@@ -1,13 +1,9 @@
 // ==========================================================================
-// Владлен — Портфолио & Резюме
-// Полный интерактивный движок: 3D-космос (950+ звёзд), звуки, рисование, квест
-// ==========================================================================
-
 // 1. Управление аудиосистемой (WAV-файлы + Web Audio API Fallback)
+// ==========================================================================
 let audioEnabled = false;
 let audioCtx = null;
 
-// Предзагрузка внешних аудиофайлов из папки sounds/
 const soundFiles = {
   click: new Audio('sounds/click.wav'),
   beep: new Audio('sounds/beep.wav'),
@@ -16,7 +12,6 @@ const soundFiles = {
   supernova: new Audio('sounds/supernova.wav')
 };
 
-// Настройка громкости
 Object.values(soundFiles).forEach(audio => {
   audio.volume = 0.25;
 });
@@ -37,21 +32,16 @@ function toggleAudio() {
   }
 }
 
-// Универсальное воспроизведение: пробуем WAV, если недоступен — синтезируем звук
 function playSound(soundName, freq = 440, duration = 0.08, type = 'sine') {
   if (!audioEnabled) return;
 
-  // 1. Попытка воспроизвести аудиофайл
   const audio = soundFiles[soundName];
   if (audio) {
     try {
       audio.currentTime = 0;
       const playPromise = audio.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Если файл заблокирован политикой браузера, используем Web Audio API
-          synthBeep(freq, duration, type);
-        });
+        playPromise.catch(() => synthBeep(freq, duration, type));
         return;
       }
     } catch (e) {
@@ -59,8 +49,6 @@ function playSound(soundName, freq = 440, duration = 0.08, type = 'sine') {
       return;
     }
   }
-
-  // 2. Fallback на синтезатор Web Audio
   synthBeep(freq, duration, type);
 }
 
@@ -101,7 +89,7 @@ function resizeCosmos() {
 resizeCosmos();
 window.addEventListener('resize', resizeCosmos);
 
-const STAR_COUNT = 950; // Увеличенное число частиц звёзд
+const STAR_COUNT = 950;
 const FOV = 420;
 const stars = [];
 const meteors = [];
@@ -123,8 +111,7 @@ class Star {
     this.x = (Math.random() - 0.5) * cWidth * 3.0;
     this.y = (Math.random() - 0.5) * cHeight * 3.0;
     this.z = initial ? Math.random() * 1100 + 1 : 1100;
-    
-    // Три слоя звёзд: мелкая звёздная пыль, средние звёзды и яркие ближние светила
+
     const rand = Math.random();
     if (rand < 0.65) {
       this.size = Math.random() * 0.8 + 0.4;
@@ -139,7 +126,7 @@ class Star {
 
     this.twinkleSpeed = Math.random() * 0.04 + 0.01;
     this.twinkleOffset = Math.random() * Math.PI * 2;
-    
+
     const tints = [
       '255, 255, 255',
       '240, 245, 255',
@@ -154,7 +141,7 @@ class Star {
       const k = FOV / this.z;
       const px = (this.x - parallaxX) * k + cWidth / 2;
       const py = (this.y - parallaxY) * k + cHeight / 2;
-      
+
       const dx = mouseCurX - px;
       const dy = mouseCurY - py;
       const dist = Math.hypot(dx, dy);
@@ -192,7 +179,6 @@ class Star {
     c.fillStyle = `rgba(${this.color}, ${alpha})`;
     c.fill();
 
-    // Ореол для крупных близких звёзд
     if (projectedSize > 1.3 && alpha > 0.45) {
       c.beginPath();
       c.arc(px, py, projectedSize * 2.4, 0, Math.PI * 2);
@@ -202,7 +188,6 @@ class Star {
   }
 }
 
-// Класс метеоров (падающих звёзд)
 class Meteor {
   constructor() {
     this.reset();
@@ -237,7 +222,7 @@ class Meteor {
     const grad = c.createLinearGradient(tailX, tailY, this.x, this.y);
     grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
     grad.addColorStop(1, `rgba(200, 220, 255, ${this.alpha * 0.9})`);
-    
+
     c.beginPath();
     c.moveTo(tailX, tailY);
     c.lineTo(this.x, this.y);
@@ -250,12 +235,10 @@ class Meteor {
 for (let i = 0; i < STAR_COUNT; i++) {
   stars.push(new Star());
 }
-
 for (let i = 0; i < 3; i++) {
   meteors.push(new Meteor());
 }
 
-// Запуск случайных метеоров каждые 4-7 секунд
 setInterval(() => {
   const m = meteors.find(item => !item.active);
   if (m) m.spawn();
@@ -270,7 +253,6 @@ window.addEventListener('mousemove', (e) => {
   targetMouseY = ny * 190;
 });
 
-// Мобильное сенсорное управление параллаксом
 window.addEventListener('touchmove', (e) => {
   if (e.touches.length > 0) {
     const t = e.touches[0];
@@ -349,11 +331,10 @@ function attachCursorHover() {
 }
 attachCursorHover();
 
-// Гравитационная сингулярность при зажатии мыши
 window.addEventListener('mousedown', (e) => {
   const tag = e.target.tagName.toLowerCase();
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.closest('#constellationCanvas')) return;
-  
+
   isGravityActive = true;
   if (cursorRing) cursorRing.classList.add('cursor-gravity');
   if (cursorDot) cursorDot.classList.add('cursor-gravity');
@@ -370,7 +351,6 @@ window.addEventListener('mouseup', () => {
   if (cursorRing) cursorRing.classList.remove('cursor-active');
 });
 
-// Искры звёздной пыльцы при клике
 window.addEventListener('click', (e) => {
   if (e.target.closest('input') || e.target.closest('textarea')) return;
   for (let i = 0; i < 6; i++) {
@@ -398,26 +378,17 @@ window.addEventListener('click', (e) => {
 });
 
 // ==========================================================================
-// 4. Интерактивный холст: свободное рисование белым светом (затухание 3 сек)
+// 4. Интерактивный холст: рисование белым светом + узлы защиты
 // ==========================================================================
 const cPadCanvas = document.getElementById('constellationCanvas');
 const cPadCtx = cPadCanvas ? cPadCanvas.getContext('2d') : null;
 let cPadWidth = 0;
 let cPadHeight = 0;
 
-function resizeCPad() {
-  if (!cPadCanvas) return;
-  cPadWidth = cPadCanvas.width = cPadCanvas.clientWidth;
-  cPadHeight = cPadCanvas.height = cPadCanvas.clientHeight;
-}
-window.addEventListener('resize', resizeCPad);
-setTimeout(resizeCPad, 100);
-
 const nodeLabels = [
-  'Firewall', 'SIEM Core', 'Active Directory', 'CCTV RTSP', 
+  'Firewall', 'SIEM Core', 'Active Directory', 'CCTV RTSP',
   'VPN Gateway', 'IDS/IPS', 'Proxy Guard', 'Patch Panel DME'
 ];
-
 const pentatonicNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
 
 let cNodes = [];
@@ -425,7 +396,15 @@ let connectedNodes = [];
 let isDrawingOnPad = false;
 let drawnStrokes = [];
 let currentStroke = null;
-const STROKE_LIFETIME = 3000; // 3 секунды
+let cPadMouse = { x: -1000, y: -1000 };
+const STROKE_LIFETIME = 3000;
+
+function resizeCPad() {
+  if (!cPadCanvas) return;
+  cPadWidth = cPadCanvas.width = cPadCanvas.clientWidth;
+  cPadHeight = cPadCanvas.height = cPadCanvas.clientHeight;
+}
+window.addEventListener('resize', resizeCPad);
 
 function initConstellationNodes() {
   if (!cPadCanvas) return;
@@ -472,10 +451,29 @@ function resetConstellationPad() {
   showToast('Холст очищен');
 }
 
-let cPadMouse = { x: -1000, y: -1000 };
+function checkNodeInteraction(mx, my) {
+  for (let node of cNodes) {
+    const dist = Math.hypot(node.x - mx, node.y - my);
+    if (dist < 28) {
+      if (!connectedNodes.includes(node.id)) {
+        connectedNodes.push(node.id);
+        playSound('node', node.freq, 0.35, 'sine');
+        showToast(`Узел [${node.label}] активирован!`);
+        updateCScore();
+
+        if (connectedNodes.length === cNodes.length) {
+          setTimeout(() => {
+            playSound('success', 523.25, 0.5, 'sine');
+            showToast('✦ Защитная паутина полностью сформирована!');
+          }, 200);
+        }
+      }
+      break;
+    }
+  }
+}
 
 if (cPadCanvas) {
-  // Мышь
   cPadCanvas.addEventListener('mousedown', (e) => {
     e.stopPropagation();
     isDrawingOnPad = true;
@@ -510,7 +508,6 @@ if (cPadCanvas) {
     cPadMouse.y = -1000;
   });
 
-  // Сенсорное рисование на смартфонах/планшетах
   cPadCanvas.addEventListener('touchstart', (e) => {
     e.stopPropagation();
     const touch = e.touches[0];
@@ -541,34 +538,12 @@ if (cPadCanvas) {
   });
 }
 
-function checkNodeInteraction(mx, my) {
-  for (let node of cNodes) {
-    const dist = Math.hypot(node.x - mx, node.y - my);
-    if (dist < 28) {
-      if (!connectedNodes.includes(node.id)) {
-        connectedNodes.push(node.id);
-        playSound('node', node.freq, 0.35, 'sine');
-        showToast(`Узел [${node.label}] активирован!`);
-        updateCScore();
-
-        if (connectedNodes.length === cNodes.length) {
-          setTimeout(() => {
-            playSound('success', 523.25, 0.5, 'sine');
-            showToast('✦ Защитная паутина полностью сформирована!');
-          }, 200);
-        }
-      }
-      break;
-    }
-  }
-}
-
 function renderConstellationPad() {
   if (!cPadCtx || !cPadCanvas) return;
   cPadCtx.clearRect(0, 0, cPadWidth, cPadHeight);
   const now = Date.now();
 
-  // 1. Отрисовка светящихся белых линий с плавным затуханием
+  // 1. Светящиеся белые линии с затуханием
   cPadCtx.save();
   cPadCtx.lineCap = 'round';
   cPadCtx.lineJoin = 'round';
@@ -596,14 +571,12 @@ function renderConstellationPad() {
       cPadCtx.moveTo(p1.x, p1.y);
       cPadCtx.lineTo(p2.x, p2.y);
 
-      // Основная белая светящаяся линия
       cPadCtx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
       cPadCtx.shadowColor = `rgba(255, 255, 255, ${alpha * 0.85})`;
       cPadCtx.shadowBlur = 12 * alpha;
       cPadCtx.lineWidth = 2.8 * alpha + 1;
       cPadCtx.stroke();
 
-      // Мягкий космический ореол
       cPadCtx.strokeStyle = `rgba(216, 180, 254, ${alpha * 0.35})`;
       cPadCtx.shadowColor = `rgba(167, 139, 250, ${alpha * 0.6})`;
       cPadCtx.shadowBlur = 22 * alpha;
@@ -613,7 +586,7 @@ function renderConstellationPad() {
   }
   cPadCtx.restore();
 
-  // 2. Фоновые тонкие линии связей между узлами
+  // 2. Фоновые линии связей между узлами
   for (let i = 0; i < cNodes.length; i++) {
     for (let j = i + 1; j < cNodes.length; j++) {
       const d = Math.hypot(cNodes[i].x - cNodes[j].x, cNodes[i].y - cNodes[j].y);
@@ -628,7 +601,7 @@ function renderConstellationPad() {
     }
   }
 
-  // 3. Соединенные активные узлы
+  // 3. Соединённые активные узлы
   if (connectedNodes.length > 1) {
     cPadCtx.beginPath();
     const first = cNodes[connectedNodes[0]];
@@ -687,13 +660,8 @@ function renderConstellationPad() {
   requestAnimationFrame(renderConstellationPad);
 }
 
-setTimeout(() => {
-  initConstellationNodes();
-  renderConstellationPad();
-}, 200);
-
 // ==========================================================================
-// 5. Мобильное меню и навигация
+// 5. Мобильное меню, навигация, прогресс прокрутки, reveal
 // ==========================================================================
 const mobileBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
@@ -705,7 +673,6 @@ if (mobileBtn && navLinks) {
     playSound('click', 600, 0.05, 'sine');
   });
 
-  // Закрывать меню при клике на любой пункт
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('open');
@@ -713,7 +680,6 @@ if (mobileBtn && navLinks) {
     });
   });
 
-  // Закрывать меню при клике вне его
   document.addEventListener('click', (e) => {
     if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
       navLinks.classList.remove('open');
@@ -721,7 +687,6 @@ if (mobileBtn && navLinks) {
   });
 }
 
-// Индикатор прокрутки страницы
 window.addEventListener('scroll', () => {
   const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
   const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -730,7 +695,6 @@ window.addEventListener('scroll', () => {
   if (bar) bar.style.width = scrolled + '%';
 });
 
-// Плавное появление элементов
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -757,7 +721,7 @@ function selectGameOption(stage, type, btn) {
     btn.classList.add('selected-correct');
     playSound('node', 880, 0.15, 'sine');
     showToast('Рубеж пройден! Защита усилена.');
-    
+
     const currentBadge = document.getElementById(`stepBadge${stage}`);
     if (currentBadge) {
       currentBadge.classList.remove('active');
@@ -771,7 +735,7 @@ function selectGameOption(stage, type, btn) {
     setTimeout(() => {
       const curStageEl = document.getElementById(`gameStage${stage}`);
       if (curStageEl) curStageEl.classList.remove('active');
-      
+
       if (stage < 3) {
         currentStage = stage + 1;
         const nextStageEl = document.getElementById(`gameStage${currentStage}`);
@@ -786,7 +750,6 @@ function selectGameOption(stage, type, btn) {
         showToast('Поздравляем! Оффер-пакет разблокирован.');
       }
     }, 600);
-
   } else {
     btn.classList.add('selected-wrong');
     playSound('beep', 200, 0.15, 'sawtooth');
@@ -848,24 +811,24 @@ function executeTerminalCommand(cmd) {
   print       — открыть версию для печати и PDF`;
   } else if (cleanCmd === 'devops' || cleanCmd === 'infra') {
     output = `DEVOPS И ИНФРАСТРУКТУРА:
-• ОС: Linux (Ubuntu, Debian, Kali) — установка, конфигурация, системные службы systemd, харденинг
+• ОС: Linux (Ubuntu, Debian, Kali) — установка, конфигурация, systemd, харденинг
 • Серверы: Windows Server (Active Directory, GPO, DNS, DHCP), разграничение доступа
-• Оборудование: компонентное обслуживание стоек в 3-х дата-центрах Faberlic (HDD RAID, ECC RAM, БП)
-• Сети: TCP/IP, VLAN, статическая и динамическая маршрутизация, Cisco Packet Tracer, VPN
-• Автоматизация и скрипты: базовые знания C#, Bash-скрипты, системные утилиты, 1C API
-• Безопасность периметра (DevSecOps): KES, Secret Net Studio, Континент АП, аудит уязвимостей`;
+• Оборудование: обслуживание стоек в 3-х дата-центрах Faberlic (HDD RAID, ECC RAM, БП)
+• Сети: TCP/IP, VLAN, маршрутизация, Cisco Packet Tracer, VPN
+• Автоматизация: Bash-скрипты, системные утилиты, 1C API, базовый C#
+• Безопасность (DevSecOps): KES, Secret Net Studio, Континент АП, аудит уязвимостей`;
   } else if (cleanCmd === 'docker') {
     output = `DOCKER И КОНТЕЙНЕРИЗАЦИЯ:
-• Концепции контейнеризации, работа с Docker CLI и Dockerfile
+• Концепции контейнеризации, Docker CLI и Dockerfile
 • Сетевые режимы (bridge, host), volume persistent storage
 • Понимание контейнерных архитектур и принципов CI/CD`;
   } else if (cleanCmd === 'whoami') {
     output = `ПОЛЬЗОВАТЕЛЬ: Владлен (19 лет)
 РОЛЬ: Junior DevOps Engineer / системный администратор / специалист по инфраструктуре
-СПЕЦИАЛИЗАЦИЯ: системное администрирование Linux и Windows, инфраструктура ЦОД, сети, безопасность
+СПЕЦИАЛИЗАЦИЯ: Linux и Windows, инфраструктура ЦОД, сети, безопасность
 GITHUB: https://github.com/Exxcoder
 ЛОКАЦИЯ: Москва (офис, гибрид, удаленно)
-СТАТУС: открыт к предложениям (DevOps, сисадмин, инженер инфраструктуры, ИБ)`;
+СТАТУС: открыт к предложениям (DevOps, сисадмин, инфраструктура, ИБ)`;
   } else if (cleanCmd === 'skills' || cleanCmd === 'cat skills.txt') {
     output = `ТЕХНИЧЕСКИЙ СТЕК:
 • ОС: Linux (Ubuntu, Debian, Kali), Windows Server (AD, GPO), Windows 10/11
@@ -915,7 +878,9 @@ pentest-lab         (лаборатория этичного хакинга и �
   }
 }
 
-// Фильтр проектов
+// ==========================================================================
+// 8. Фильтр проектов
+// ==========================================================================
 function filterProjects(category, clickedBtn) {
   playSound('click', 600, 0.05, 'sine');
   document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -932,7 +897,9 @@ function filterProjects(category, clickedBtn) {
   });
 }
 
-// Данные модальных окон
+// ==========================================================================
+// 9. Модальные окна + данные кейсов
+// ==========================================================================
 const modalData = {
   'cctv-server': {
     tag: 'IP-видеонаблюдение · аппаратное обеспечение и сети',
@@ -959,17 +926,17 @@ const modalData = {
                                  │                            │
                         [IP-Камеры периметра]         [Устройство «Тромбон»]`,
     implementation: [
-      'Проектирование и физический монтаж кабельных трасс (витая пара Cat 5e/6), установка патч-панелей и розеток на объектах Собянинской программы «Московское долголетие».',
+      'Проектирование и физический монтаж кабельных трасс (витая пара Cat 5e/6), установка патч-панелей и розеток.',
       'Настройка адресации TCP/IP, шлюзов по умолчанию и исключение коллизий в сети.',
       'Установка и подключение камер наблюдения, ввод в единую систему мониторинга.',
-      'Пусконаладка специализированного звукового оповещения «Тромбон» для эвакуационного оповещения персонала.',
+      'Пусконаладка звукового оповещения «Тромбон» для эвакуационного оповещения персонала.',
       'Разграничение прав операторов в ПО «Орион-ПРО» для защиты конфигураций от модификаций.'
     ],
     results: 'Полная готовность объекта к сдаче, нулевой уровень сетевых сбоев, интеграция противопожарных и эвакуационных сценариев.'
   },
   'faberlic-dc': {
     tag: 'Дата-центры · серверное оборудование',
-    title: 'Обслуживание серверной инфраструктуры в 3-х дата-центрах (Faberlic)',
+    title: 'Обслуживание серверной инфраструктуры в 3-х Дата-центрах (Faberlic)',
     problem: 'Поддержание непрерывной работы сотен высоконагруженных серверов, оперативная замена вышедших из строя модулей без простоя сервисов компании.',
     architecture: `[Стойка DC #1/#2/#3] ──> [Blade / 1U-2U Серверы] ──> [Модули Hot-Swap HDD/RAM]
                                    │
@@ -981,7 +948,7 @@ const modalData = {
       'Замена модулей питания и оперативной памяти ECC DDR4/DDR5.',
       'Сборка новых серверов с нуля в соответствии с техническими регламентами IT-отдела компании.'
     ],
-    results: 'Успешное закрытие инцидентов по замене оборудования, исключение деградации производительности корпоративных баз данных и приложений.'
+    results: 'Успешное закрытие инцидентов по замене оборудования, исключение деградации производительности корпоративных БД и приложений.'
   },
   'dme-systems': {
     tag: 'Критическая инфраструктура · аэропорт',
@@ -1080,7 +1047,9 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
-// Toast-уведомления
+// ==========================================================================
+// 10. Вспомогательные функции: тосты, копирование, навыки
+// ==========================================================================
 function showToast(message) {
   const container = document.getElementById('toastContainer');
   if (!container) return;
@@ -1124,10 +1093,77 @@ function interactSkill(name) {
   showToast(`Навык проверен: ${name}`);
 }
 
+// ==========================================================================
+// 11. Форма обратной связи (Formspree + fallback)
+// ==========================================================================
 function handleFormSubmit(e) {
   e.preventDefault();
-  playSound('success', 880, 0.12, 'sine');
-  const name = document.getElementById('senderName') ? document.getElementById('senderName').value : 'Гость';
-  showToast(`Спасибо, ${name}! Сообщение сохранено.`);
-  e.target.reset();
+  const form = e.target;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+
+  // Если у формы задан action — отправляем через Formspree
+  if (form.action && form.action.startsWith('http')) {
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
+          <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Отправка...
+      `;
+    }
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Ошибка при отправке');
+        return response.json();
+      })
+      .then(() => {
+        playSound('success', 880, 0.15, 'sine');
+        showToast('Спасибо! Ваше сообщение отправлено.');
+        form.reset();
+      })
+      .catch(error => {
+        console.error('Ошибка:', error);
+        playSound('beep', 200, 0.1, 'sawtooth');
+        showToast('Произошла ошибка. Пожалуйста, попробуйте позже.');
+      })
+      .finally(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
+      });
+  } else {
+    // Fallback: локальное подтверждение без реальной отправки
+    playSound('success', 880, 0.12, 'sine');
+    const name = document.getElementById('senderName')?.value || 'Гость';
+    showToast(`Спасибо, ${name}! Сообщение сохранено.`);
+    form.reset();
+  }
 }
+
+// CSS для спиннера формы
+(function injectSpinCSS() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  `;
+  document.head.appendChild(style);
+})();
+
+// ==========================================================================
+// 12. Финальный запуск (после загрузки DOM)
+// ==========================================================================
+window.addEventListener('DOMContentLoaded', () => {
+  resizeCPad();
+  initConstellationNodes();
+  renderConstellationPad();
+});
